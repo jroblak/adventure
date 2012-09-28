@@ -7,6 +7,10 @@ var g_resources = [{
 		name: 'map1',
 		type: 'tmx',
 		src: 'tiles/map1.tmx'
+	}, {
+		name: 'char',
+		type: 'image',
+		src: 'img/char.png'
 }];
 
 var jsApp = {
@@ -25,6 +29,13 @@ var jsApp = {
 	
 	loaded: function() {
 		me.state.set(me.state.PLAY, new PlayScreen());
+		
+		me.entityPool.add("player", PlayerEntity);
+		
+		me.input.bindKey(me.input.KEY.LEFT, "left");
+		me.input.bindKey(me.input.KEY.RIGHT, "right");
+		me.input.bindKey(me.input.KEY.X, "jump", true);
+		
 		me.state.change(me.state.PLAY);
 	}
 
