@@ -12,15 +12,19 @@ var PlayerEntity = me.ObjectEntity.extend({
 	},
 	
 	equipWep: function(wep) {
-		if(this.weapon){
-			me.game.remove(this.weapon);
+		if(this.gun) {
+			me.game.remove(this.gun);
 		}
 		this.equippedWep = wep; 
-		this.weapon = new me.SpriteObject(this.pos.x, this.pos.y, this.equippedWep.gImg, 8, 8);
+		this.gun = new weapon(this.pos.x, this.pos.y, {image: this.equippedWep.gImg, spritewidth: this.equippedWep.gWidth});
+		me.game.add(this.gun, 2);
+		me.game.sort();
 	},
 	
 	shoot: function() {
-		this.bullet = new me.SpriteObject(this.pos.x, this.pos.y, this.equippedWep.projectile, 4, 4);
+		shot = new bullet(this.pos.x, this.pos.y, {image: this.equippedWep.projectile, spritewidth: this.equippedWep.pWidth});
+		me.game.add(shot, 2);
+		me.game.sort();
 	},
 	
 	update: function() {
