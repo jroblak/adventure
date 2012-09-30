@@ -11,6 +11,22 @@ var g_resources = [{
 		name: 'char',
 		type: 'image',
 		src: 'img/char.png'
+	}, {
+		name: 'staticbgmt',
+		type: 'image',
+		src: 'img/staticbgmt.png'
+	}, {
+		name: 'parallaxbgmt',
+		type: 'image',
+		src: 'img/parallaxbgmt.png'
+	}, {
+		name: 'bad1',
+		type: 'image',
+		src: 'img/bad1.png'
+	}, {
+		name: 'coin',
+		type: 'image',
+		src: 'img/coin.png'
 }];
 
 var jsApp = {
@@ -31,10 +47,14 @@ var jsApp = {
 		me.state.set(me.state.PLAY, new PlayScreen());
 		
 		me.entityPool.add("player", PlayerEntity);
+		me.entityPool.add("coin", CoinEntity);
+		me.entityPool.add("enemy", EnemyEntity);
+		//me.debug.renderHitBox = true;
 		
 		me.input.bindKey(me.input.KEY.LEFT, "left");
 		me.input.bindKey(me.input.KEY.RIGHT, "right");
 		me.input.bindKey(me.input.KEY.X, "jump", true);
+		me.input.bindKey(me.input.KEY.Z, "shoot", true)
 		
 		me.state.change(me.state.PLAY);
 	}
@@ -45,10 +65,14 @@ var PlayScreen = me.ScreenObject.extend({
 	
 	onResetEvent: function() {
 		me.levelDirector.loadLevel('map1');
+		
+		me.game.addHUD(0, 0, 640, 40);
+		me.game.HUD.addItem("score", new ScoreObject(575, 1));
+		me.game.sort();
 	},
 	
 	onDestroyEvent: function() {
-		//placeholder
+		me.game.disableHUD();
 	}
 });
 
