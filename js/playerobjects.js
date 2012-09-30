@@ -4,7 +4,7 @@ var weapons = {
 		damage: 2,
 		speed: 2,
 		gravity: 2,
-		gImg: "bGun",
+		gImg: "bWep",
 		projectile: "basic"
 	},
 	machinegun: {

@@ -2,7 +2,7 @@
 var g_resources = [{
 		name: 'map1tiles',
 		type: 'image',
-		src: 'img/map1tiles.png'
+		src: 'img/tiles and bgs/map1tiles.png'
 	}, {
 		name: 'map1',
 		type: 'tmx',
@@ -10,23 +10,31 @@ var g_resources = [{
 	}, {
 		name: 'char',
 		type: 'image',
-		src: 'img/char.png'
+		src: 'img/chars/char.png'
 	}, {
 		name: 'staticbgmt',
 		type: 'image',
-		src: 'img/staticbgmt.png'
+		src: 'img/tiles and bgs/staticbgmt.png'
 	}, {
 		name: 'parallaxbgmt',
 		type: 'image',
-		src: 'img/parallaxbgmt.png'
+		src: 'img/tiles and bgs/parallaxbgmt.png'
 	}, {
 		name: 'bad1',
 		type: 'image',
-		src: 'img/bad1.png'
+		src: 'img/chars/bad1.png'
+	}, {
+		name: 'bWep',
+		type: 'image',
+		src: 'img/weapons/bWep.png' 
+	}, {
+		name: 'basic',
+		type: 'image',
+		src: 'img/weapons/basic.png'
 	}, {
 		name: 'coin',
 		type: 'image',
-		src: 'img/coin.png'
+		src: 'img/misc/coin.png'
 }];
 
 var jsApp = {

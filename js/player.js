@@ -4,11 +4,23 @@ var PlayerEntity = me.ObjectEntity.extend({
 		this.parent(x, y, settings);
 		this.setVelocity(3, 15);
 		
-		this.equippedWep = weapons.basic;
-		
 		//change the collision rect to match the sprite
 		this.updateColRect(4, 26, 12, 20);
+		
+		this.equipWep(weapons.basic);
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+	},
+	
+	equipWep: function(wep) {
+		if(this.weapon){
+			me.game.remove(this.weapon);
+		}
+		this.equippedWep = wep; 
+		this.weapon = new me.SpriteObject(this.pos.x, this.pos.y, this.equippedWep.gImg, 8, 8);
+	},
+	
+	shoot: function() {
+		this.bullet = new me.SpriteObject(this.pos.x, this.pos.y, this.equippedWep.projectile, 4, 4);
 	},
 	
 	update: function() {
@@ -28,7 +40,7 @@ var PlayerEntity = me.ObjectEntity.extend({
 			}
 		}
 		if (me.input.isKeyPressed('shoot')) {
-			shoot();
+			this.shoot();
 		}
 		
 		//update player movement
@@ -56,10 +68,5 @@ var PlayerEntity = me.ObjectEntity.extend({
 		
 		// if there is no movement or animation return false
 		return false;
-	},
-	
-	shoot: function() {
-		type = equippedWep;
-		bullet = new Projectile(type, x, y)
 	}
 });
