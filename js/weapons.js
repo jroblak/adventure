@@ -25,12 +25,13 @@ var bullet = me.ObjectEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
 		this.collidable = true;
+		this.gravity = 0;
 	},
 	
 	update: function() {
-		//follow player
-		//velocity from the weapons object?
-		this.vel.x -= 1;
+		
+		//velocity from the weapons object, player facing
+		this.vel.x += 1;
 		
 		//do collision
 		
@@ -42,11 +43,14 @@ var bullet = me.ObjectEntity.extend({
 var weapon = me.ObjectEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
-		this.collidable = true;
+
+		this.gravity = 0;
 	},
 	
 	update: function() {
 		//follow player
+		this.pos.x = me.game.getEntityByName("player")[0].pos.x + 27;
+		this.pos.y = me.game.getEntityByName("player")[0].pos.y + 15;
 		
 		this.updateMovement();
 		return true;

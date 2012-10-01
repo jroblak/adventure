@@ -54,7 +54,7 @@ var jsApp = {
 	loaded: function() {
 		me.state.set(me.state.PLAY, new PlayScreen());
 		
-		me.entityPool.add("player", PlayerEntity);
+		player = me.entityPool.add("player", PlayerEntity);
 		me.entityPool.add("coin", CoinEntity);
 		me.entityPool.add("enemy", EnemyEntity);
 		//me.debug.renderHitBox = true;
@@ -65,6 +65,7 @@ var jsApp = {
 		me.input.bindKey(me.input.KEY.Z, "shoot", true)
 		
 		me.state.change(me.state.PLAY);
+		
 	}
 
 };
