@@ -1,4 +1,4 @@
-var EnemyEntity = me.ObjectEntity.extend({
+game.EnemyEntity = me.ObjectEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
 		settings.spritewidth = 32;

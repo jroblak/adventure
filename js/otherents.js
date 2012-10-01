@@ -1,4 +1,4 @@
-var CoinEntity = me.CollectableEntity.extend({
+game.CoinEntity = me.CollectableEntity.extend({
 	
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
@@ -11,7 +11,7 @@ var CoinEntity = me.CollectableEntity.extend({
 	}
 });
 
-var ScoreObject = me.HUD_Item.extend({
+game.ScoreObject = me.HUD_Item.extend({
 	init:function(x, y) {
 		this.parent(x, y);
 		this.font = new me.Font('century gothic', 24, 'black');

@@ -1,91 +1,56 @@
 // main.js
-var g_resources = [{
-		name: 'map1tiles',
-		type: 'image',
-		src: 'img/tiles and bgs/map1tiles.png'
-	}, {
-		name: 'map1',
-		type: 'tmx',
-		src: 'tiles/map1.tmx'
-	}, {
-		name: 'char',
-		type: 'image',
-		src: 'img/chars/char.png'
-	}, {
-		name: 'staticbgmt',
-		type: 'image',
-		src: 'img/tiles and bgs/staticbgmt.png'
-	}, {
-		name: 'parallaxbgmt',
-		type: 'image',
-		src: 'img/tiles and bgs/parallaxbgmt.png'
-	}, {
-		name: 'bad1',
-		type: 'image',
-		src: 'img/chars/bad1.png'
-	}, {
-		name: 'bWep',
-		type: 'image',
-		src: 'img/weapons/bWep.png' 
-	}, {
-		name: 'basic',
-		type: 'image',
-		src: 'img/weapons/basic.png'
-	}, {
-		name: 'coin',
-		type: 'image',
-		src: 'img/misc/coin.png'
-}];
-
-var jsApp = {
+var game = {
 	
 	onload: function() {
-		if (!me.video.init('jsapp', 640, 480, false, 1.0)) {
-			console.log('browser doesn\'t support html 5 canvas');
-			return;
-		}
+			if (!me.video.init('gamescreen', 640, 480, false, 1.0)) {
+				console.log('browser doesn\'t support html 5 canvas');
+				return;
+			}
+			
+			me.audio.init('mp3, ogg');
+			me.loader.onload = this.loaded.bind(this);
+			this.load();
+			
+			me.state.change(me.state.LOADING);
+	},
+	
+	load: function() {
+		var resources = [];
 		
-		me.audio.init('mp3, ogg');
-		me.loader.onload = this.loaded.bind(this);
-		me.loader.preload(g_resources);
-		me.state.change(me.state.LOADING);
+		this.resources['img'].forEach(function (value) {
+			resources.push({
+				name: value,
+				type: "image",
+				src: "img/" + value + ".png"
+			})
+		});
+		
+		this.resources['map'].forEach(function (value) {
+			resources.push({
+				name: value,
+				type: "tmx",
+				src: "tiles/" + value + ".tmx"
+			})
+		});
+		
+		me.loader.preload(resources);
 	},
 	
 	loaded: function() {
-		me.state.set(me.state.PLAY, new PlayScreen());
-		
-		player = me.entityPool.add("player", PlayerEntity);
-		me.entityPool.add("coin", CoinEntity);
-		me.entityPool.add("enemy", EnemyEntity);
-		//me.debug.renderHitBox = true;
-		
-		me.input.bindKey(me.input.KEY.LEFT, "left");
-		me.input.bindKey(me.input.KEY.RIGHT, "right");
-		me.input.bindKey(me.input.KEY.X, "jump", true);
-		me.input.bindKey(me.input.KEY.Z, "shoot", true);
-		me.input.bindKey(me.input.KEY.C, "switch", true);
-		
-		me.state.change(me.state.PLAY);
-		
+			me.state.set(me.state.PLAY, new game.PlayScreen());
+			
+			me.entityPool.add("player", game.PlayerEntity);
+			me.entityPool.add("coin", game.CoinEntity);
+			me.entityPool.add("enemy", game.EnemyEntity);
+			
+			me.input.bindKey(me.input.KEY.LEFT, "left");
+			me.input.bindKey(me.input.KEY.RIGHT, "right");
+			me.input.bindKey(me.input.KEY.X, "jump", true);
+			me.input.bindKey(me.input.KEY.Z, "shoot", true);
+			me.input.bindKey(me.input.KEY.C, "switch", true);
+			
+			me.state.change(me.state.PLAY);
+			
 	}
 
 };
-
-var PlayScreen = me.ScreenObject.extend({
-	
-	onResetEvent: function() {
-		me.levelDirector.loadLevel('map1');
-		
-		me.game.addHUD(0, 0, 640, 40);
-		me.game.HUD.addItem("score", new ScoreObject(575, 1));
-		me.game.sort();
-	},
-	
-	onDestroyEvent: function() {
-		me.game.disableHUD();
-	}
-});
-
-window.onReady(function() {
-	jsApp.onload();
-});

@@ -1,4 +1,4 @@
-var weapons = {
+weapons = {
 	basic: {
 		firerate: 2,
 		damage: 2,
@@ -21,12 +21,13 @@ var weapons = {
 	}
 };
 
-var bullet = me.ObjectEntity.extend({
-	init: function(x, y, settings) {
+game.bullet = me.ObjectEntity.extend({
+	init: function(x, y, settings, owner) {
 		this.parent(x, y, settings);
 		this.gravity = 0;
+		this.owner = owner;
 		
-		if(me.game.getEntityByName("player")[0].facing == 'right') {
+		if(this.owner.facing == 'right') {
 			this.facing = 'right';
 		} else {
 			this.facing = 'left';
@@ -40,10 +41,11 @@ var bullet = me.ObjectEntity.extend({
 	}
 });
 
-var weapon = me.ObjectEntity.extend({
-	init: function(x, y, settings) {
+game.weapon = me.ObjectEntity.extend({
+	init: function(x, y, settings, gun) {
 		this.parent(x, y, settings);
 		this.gravity = 0;
+		this.gun = gun;
 	},
 	
 	update: function() {

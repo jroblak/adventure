@@ -1,11 +1,12 @@
-var PlayerEntity = me.ObjectEntity.extend({
+game.PlayerEntity = me.ObjectEntity.extend({
 	
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
 		this.setVelocity(3, 15);
-		this.addAnimation("gun1", [0, 1, 2, 3, 4]);
-		this.addAnimation("gun2", [5, 6, 7, 8, 9]);
-		this.setCurrentAnimation("gun1");
+		
+		//add Animation for jumping
+		this.addAnimation("walk", [0, 1, 2, 3, 4]);
+		this.setCurrentAnimation("walk");
 		
 		//change the collision rect to match the sprite
 		this.updateColRect(4, 26, 12, 20);
@@ -15,17 +16,18 @@ var PlayerEntity = me.ObjectEntity.extend({
 	},
 	
 	equipWep: function(wep) {
-		if(this.gun) {
+		//check to make sure it exists before trying to remove it
+		if(gun) {
 			me.game.remove(this.gun);
 		}
 		this.equippedWep = wep; 
-		this.gun = new weapon(this.pos.x + 25, this.pos.y, {image: this.equippedWep.gImg, spritewidth: this.equippedWep.gWidth});
-		me.game.add(this.gun, 2);
+		var gun = new game.weapon(this.pos.x + 25, this.pos.y, {image: this.equippedWep.gImg, spritewidth: this.equippedWep.gWidth}, this);
+		me.game.add(gun, 2);
 		me.game.sort();
 	},
 	
 	shoot: function() {
-		shot = new bullet(this.pos.x+30, this.pos.y+17, {image: this.equippedWep.projectile, spritewidth: this.equippedWep.pWidth});
+		shot = new game.bullet(this.pos.x+30, this.pos.y+17, {image: this.equippedWep.projectile, spritewidth: this.equippedWep.pWidth}, this.equippedWep);
 		me.game.add(shot, 2);
 		me.game.sort();
 	},
@@ -52,7 +54,7 @@ var PlayerEntity = me.ObjectEntity.extend({
 			this.shoot();
 		}
 		if(me.input.isKeyPressed('switch')) {
-			this.setCurrentAnimation("gun2");
+			//to do
 		}
 		
 		//update player movement
