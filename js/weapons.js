@@ -4,7 +4,7 @@ game.weapons = {
 		damage: 2,
 		speed: 5,
 		physics: {
-			weight: .05,
+			weight: .005,
 			mass: 1,
 			shape: 'round'
 		},
@@ -36,7 +36,9 @@ game.weapons = {
 game.bullet = me.ObjectEntity.extend({
 	init: function(x, y, gun, owner) {
 		this.parent(x, y, {image: gun.projectile, spriteWidth: gun.pWidth});
-		this.gravity = 0;
+		//change all this to do it right -- actual physics; work on
+		//grenade launcher next
+		this.gravity = gun.physics.weight;
 		this.gun = gun;
 		this.collidable = true;
 		this.owner = owner;
@@ -75,11 +77,7 @@ game.bullet = me.ObjectEntity.extend({
 			this.angle = game.physicsEngine.ranAngle(this.facing, 'solid');
 			this.ricochet = true;
 			this.vel.x = (this.facing == 'right') ? -this.gun.speed : this.gun.speed;
-			this.facing = (this.facing == 'right')? this.facing = 'left' : this.facing = 'right';
-			var GUID = this.GUID;
-			setTimeout(function() {
-				this.game.remove(me.game.getEntityByGUID[GUID]);
-			}, 500);
+			this.facing = (this.facing == 'right') ? this.facing = 'left' : this.facing = 'right';
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
 			me.game.remove(this);
 		}
