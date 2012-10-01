@@ -10,24 +10,25 @@ game.PlayerEntity = me.ObjectEntity.extend({
 		
 		//change the collision rect to match the sprite
 		this.updateColRect(4, 26, 12, 20);
+		this.facing = 'right';
 		
-		this.equipWep(weapons.basic);
+		this.equipWep(game.weapons.basic);
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 	},
 	
 	equipWep: function(wep) {
 		//check to make sure it exists before trying to remove it
 		if(gun) {
-			me.game.remove(this.gun);
+			me.game.remove(gun);
 		}
 		this.equippedWep = wep; 
-		var gun = new game.weapon(this.pos.x + 25, this.pos.y, {image: this.equippedWep.gImg, spritewidth: this.equippedWep.gWidth}, this);
+		var gun = new game.weapon(this.pos.x, this.pos.y, this.equippedWep, this);
 		me.game.add(gun, 2);
 		me.game.sort();
 	},
 	
 	shoot: function() {
-		shot = new game.bullet(this.pos.x+30, this.pos.y+17, {image: this.equippedWep.projectile, spritewidth: this.equippedWep.pWidth}, this.equippedWep);
+		shot = new game.bullet(this.pos.x, this.pos.y, this.equippedWep, this);
 		me.game.add(shot, 2);
 		me.game.sort();
 	},

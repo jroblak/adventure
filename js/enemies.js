@@ -2,6 +2,7 @@ game.EnemyEntity = me.ObjectEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
 		settings.spritewidth = 32;
+		this.hp = 4;
 		
 		this.parent(x, y, settings);
 		this.updateColRect(4, 26, 12, 20);
@@ -23,6 +24,13 @@ game.EnemyEntity = me.ObjectEntity.extend({
 			this.flicker(45);
 			this.collidable = false;
 			me.game.HUD.updateItemValue("score", 250);
+			me.game.remove(this);
+		} 
+	},
+	
+	removeHP: function(dmg) {
+		this.hp -= dmg;
+		if(this.hp <= 0) {
 			me.game.remove(this);
 		}
 	},
