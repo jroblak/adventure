@@ -56,6 +56,7 @@ game.bullet = me.ObjectEntity.extend({
 	update: function() {
 
 		if(this.ricochet) {
+			//change this to a helper function / calls to physics lib
 			this.pos.x += Math.cos((Math.PI/180)*this.angle)*this.vel.x;
 			this.pos.y += Math.sin((Math.PI/180)*this.angle)*this.vel.x;
 		} else {
@@ -70,6 +71,7 @@ game.bullet = me.ObjectEntity.extend({
 				res.obj.removeHP(this.gun.damage);
 				me.game.remove(this);
 			}
+		//figure out how to remove (this)...
 		} else if(hit.xprop.type === 'solid') {
 			this.angle = game.physicsEngine.ranAngle(this.facing, 'solid');
 			this.ricochet = true;
