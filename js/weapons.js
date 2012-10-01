@@ -71,11 +71,15 @@ game.bullet = me.ObjectEntity.extend({
 				res.obj.removeHP(this.gun.damage);
 				me.game.remove(this);
 			}
-		//figure out how to remove (this)...
 		} else if(hit.xprop.type === 'solid') {
 			this.angle = game.physicsEngine.ranAngle(this.facing, 'solid');
 			this.ricochet = true;
 			this.vel.x = (this.facing == 'right') ? -this.gun.speed : this.gun.speed;
+			this.facing = (this.facing == 'right')? this.facing = 'left' : this.facing = 'right';
+			var GUID = this.GUID;
+			setTimeout(function() {
+				this.game.remove(me.game.getEntityByGUID[GUID]);
+			}, 500);
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
 			me.game.remove(this);
 		}
