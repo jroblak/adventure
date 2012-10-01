@@ -3,7 +3,11 @@ game.weapons = {
 		firerate: 2,
 		damage: 2,
 		speed: 5,
-		gravity: 2,
+		physics: {
+			weight: .05,
+			mass: 1,
+			shape: 'round'
+		},
 		gImg: "bWep",
 		projectile: "basic",
 		pWidth: 4,
@@ -14,8 +18,12 @@ game.weapons = {
 	machinegun: {
 		firerate: 15,
 		damage: 1,
-		speed: 2,
-		gravity: 2,
+		speed: 4,
+		physics: {
+			weight: .05,
+			mass: 1,
+			shape: 'round'
+		},		
 		gImg: "mGun",
 		projectile: "basic",
 		pWidth: 4,
@@ -35,16 +43,24 @@ game.bullet = me.ObjectEntity.extend({
 		this.pos.y = this.owner.pos.y + this.gun.offsetY;
 		
 		if(this.owner.facing == 'right') {
+			this.facing = 'right';
 			this.vel.x = gun.speed;
 			this.pos.x = this.owner.pos.x + this.gun.offsetX;
 		} else {
+			this.facing = 'left';
 			this.vel.x = -gun.speed;
 			this.pos.x = this.owner.pos.x;
 		}
 	},
 	
 	update: function() {
-		this.pos.x += this.vel.x;
+
+		if(this.ricochet) {
+			this.pos.x += Math.cos((Math.PI/180)*this.angle)*this.vel.x;
+			this.pos.y += Math.sin((Math.PI/180)*this.angle)*this.vel.x;
+		} else {
+			this.pos.x += this.vel.x;
+		}
 		
 		var res = me.game.collide(this);
 		var hit = this.updateMovement();
@@ -55,7 +71,9 @@ game.bullet = me.ObjectEntity.extend({
 				me.game.remove(this);
 			}
 		} else if(hit.xprop.type === 'solid') {
-			me.game.remove(this);
+			this.angle = game.physicsEngine.ranAngle(this.facing, 'solid');
+			this.ricochet = true;
+			this.vel.x = (this.facing == 'right') ? -this.gun.speed : this.gun.speed;
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
 			me.game.remove(this);
 		}
