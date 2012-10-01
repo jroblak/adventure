@@ -2,7 +2,7 @@ var weapons = {
 	basic: {
 		firerate: 2,
 		damage: 2,
-		speed: 2,
+		speed: .5,
 		gravity: 2,
 		gImg: "bWep",
 		projectile: "basic",
@@ -24,16 +24,16 @@ var weapons = {
 var bullet = me.ObjectEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
-		this.collidable = true;
 		this.gravity = 0;
+		
+		if(me.game.getEntityByName("player")[0].facing == 'right') {
+			this.facing = 'right';
+		} else {
+			this.facing = 'left';
+		}
 	},
 	
 	update: function() {
-		
-		//velocity from the weapons object, player facing
-		this.vel.x += 1;
-		
-		//do collision
 		
 		this.updateMovement();
 		return true;
@@ -43,14 +43,11 @@ var bullet = me.ObjectEntity.extend({
 var weapon = me.ObjectEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
-
 		this.gravity = 0;
 	},
 	
 	update: function() {
-		//follow player
-		this.pos.x = me.game.getEntityByName("player")[0].pos.x + 27;
-		this.pos.y = me.game.getEntityByName("player")[0].pos.y + 15;
+		//follow player 
 		
 		this.updateMovement();
 		return true;

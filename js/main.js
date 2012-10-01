@@ -62,7 +62,8 @@ var jsApp = {
 		me.input.bindKey(me.input.KEY.LEFT, "left");
 		me.input.bindKey(me.input.KEY.RIGHT, "right");
 		me.input.bindKey(me.input.KEY.X, "jump", true);
-		me.input.bindKey(me.input.KEY.Z, "shoot", true)
+		me.input.bindKey(me.input.KEY.Z, "shoot", true);
+		me.input.bindKey(me.input.KEY.C, "switch", true);
 		
 		me.state.change(me.state.PLAY);
 		

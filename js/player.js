@@ -3,6 +3,9 @@ var PlayerEntity = me.ObjectEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
 		this.setVelocity(3, 15);
+		this.addAnimation("gun1", [0, 1, 2, 3, 4]);
+		this.addAnimation("gun2", [5, 6, 7, 8, 9]);
+		this.setCurrentAnimation("gun1");
 		
 		//change the collision rect to match the sprite
 		this.updateColRect(4, 26, 12, 20);
@@ -16,13 +19,13 @@ var PlayerEntity = me.ObjectEntity.extend({
 			me.game.remove(this.gun);
 		}
 		this.equippedWep = wep; 
-		this.gun = new weapon(this.pos.x, this.pos.y, {image: this.equippedWep.gImg, spritewidth: this.equippedWep.gWidth});
+		this.gun = new weapon(this.pos.x + 25, this.pos.y, {image: this.equippedWep.gImg, spritewidth: this.equippedWep.gWidth});
 		me.game.add(this.gun, 2);
 		me.game.sort();
 	},
 	
 	shoot: function() {
-		shot = new bullet(this.pos.x, this.pos.y, {image: this.equippedWep.projectile, spritewidth: this.equippedWep.pWidth});
+		shot = new bullet(this.pos.x+30, this.pos.y+17, {image: this.equippedWep.projectile, spritewidth: this.equippedWep.pWidth});
 		me.game.add(shot, 2);
 		me.game.sort();
 	},
@@ -30,9 +33,11 @@ var PlayerEntity = me.ObjectEntity.extend({
 	update: function() {
 		if (me.input.isKeyPressed('left')) {
 			this.flipX(true);
+			this.facing = 'left';
 			this.vel.x -= this.accel.x * me.timer.tick;
 		} else if (me.input.isKeyPressed('right')) {
 			this.flipX(false);
+			this.facing = 'right';
 			this.vel.x += this.accel.x * me.timer.tick;
 		} else {
 			this.vel.x = 0;
@@ -45,6 +50,9 @@ var PlayerEntity = me.ObjectEntity.extend({
 		}
 		if (me.input.isKeyPressed('shoot')) {
 			this.shoot();
+		}
+		if(me.input.isKeyPressed('switch')) {
+			this.setCurrentAnimation("gun2");
 		}
 		
 		//update player movement
