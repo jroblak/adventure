@@ -6,7 +6,8 @@ game.weapons = {
 		physics: {
 			weight: .005,
 			mass: 1,
-			shape: 'round'
+			shape: 'round',
+			rico: true
 		},
 		gImg: "bWep",
 		projectile: "basic",
@@ -22,7 +23,8 @@ game.weapons = {
 		physics: {
 			weight: .05,
 			mass: 1,
-			shape: 'round'
+			shape: 'round',
+			rico: false
 		},		
 		gImg: "mGun",
 		projectile: "basic",
@@ -58,14 +60,14 @@ game.bullet = me.ObjectEntity.extend({
 	
 	update: function() {
 		var self = this;
-		/*
+		
 		if(self.ricochet) {
 			self.pos.x += Math.cos((Math.PI/180)*self.angle)*self.vel.x;
 			self.pos.y += Math.sin((Math.PI/180)*self.angle)*self.vel.x;
 		} else {
-		*/
+		
 			self.pos.x += self.vel.x;
-		//}
+		}
 		
 		var res = me.game.collide(self);
 		var hit = self.updateMovement();
@@ -75,17 +77,24 @@ game.bullet = me.ObjectEntity.extend({
 				res.obj.removeHP(self.gun.damage);
 				me.game.remove(self);
 			}
-		} else if(hit.xprop.type === 'solid') {
-			/*
-			self.angle = game.physicsEngine.ranAngle(self.facing, 'solid');
-			self.ricochet = true;
-			self.vel.x = (self.facing == 'right') ? -self.gun.speed : self.gun.speed;
-			self.facing = (self.facing == 'right') ? self.facing = 'left' : self.facing = 'right';
-			setTimeout(function() {
-				me.game.remove(self);
-			}, 100);
-			*/
-			me.game.remove(self);
+		} else if(hit.xprop.type === 'solid' && !self.ricochet) {
+			if(self.gun.physics.rico) {
+				self.angle = game.physicsEngine.ranAngle(self.facing, 'solid');
+				self.ricochet = true;
+				self.vel.x = (self.facing == 'right') ? -self.gun.speed : self.gun.speed;
+				self.facing = (self.facing == 'right') ? self.facing = 'left' : self.facing = 'right';
+				setTimeout(function() {
+					me.game.remove(self);
+				}, 75);
+			} else if(self.gun.physics.bounce) {
+				//placeholder for bounces (grenades);
+			} else {
+				if(self.gun.explode){
+					//place holder for explosions
+				} else {
+					me.game.remove(self);
+				}
+			}
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
 			me.game.remove(self);
 		} else {
@@ -98,6 +107,8 @@ game.bullet = me.ObjectEntity.extend({
 			self.parent(self);
 			return true;
 		}
+		
+		return false;
 	}
 });
 
@@ -111,6 +122,11 @@ game.weapon = me.SpriteObject.extend({
 		self.jumpOffset = 0;
 		self.owner = owner;
 		self.gun = gun;
+		
+		if(self.owner.facing == 'left') {
+			self.flipX(true);
+			self.addOffset = -26;
+		}
 	},
 	
 	updatePos: function() {
