@@ -121,6 +121,7 @@ game.projectile = me.ObjectEntity.extend({
 		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				res.obj.removeHP(self.gun.damage);
+				self.explode();
 				me.game.remove(self);
 			}
 		// If it hit a solid tile and hasn't ricocheted yet (to keep it simple/for now)
@@ -240,14 +241,9 @@ game.Explosion = me.ObjectEntity.extend({
 		self.init = true;
 		this.gravity = 0;
 		
-		// add explosion sprite
-		//self.addAnimation("explode", [0, 1, 2, 3, 4]);
-		//self.setCurrentAnimation("explode");
 	},
 	update: function() {
 		var self = this;
-		
-		this.vel.x += -this.accel.x * me.timer.tick;
 		
 		if(self.init) {
 			setTimeout(function() {
