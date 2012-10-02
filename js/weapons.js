@@ -121,7 +121,10 @@ game.projectile = me.ObjectEntity.extend({
 		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				res.obj.removeHP(self.gun.damage);
-				self.explode();
+				if(self.gun.explode && !self.exploded) {
+					self.explode();
+					self.exploded = true;
+				}	
 				me.game.remove(self);
 			}
 		// If it hit a solid tile and hasn't ricocheted yet (to keep it simple/for now)
