@@ -17,7 +17,7 @@ game.weapons = {
 		projectile: "basic",
 		pWidth: 4,
 		gWidth: 8,
-		offsetX: 25,
+		offsetX: 23,
 		offsetY: 15
 	},
 	machinegun: {
@@ -43,24 +43,24 @@ game.weapons = {
 		speed: 3,
 		physics: {
 			weight: .008,
-			mass: 1,
+			mass: 10,
 			shape: 'round',
 			rico: false
 		},		
-		gImg: "mGun",
-		projectile: "basic",
+		gImg: "rGun",
+		projectile: "rocket",
 		explode: true,
-		pWidth: 4,
-		gWidth: 10,
+		pWidth: 6,
+		gWidth: 12,
 		offsetX: 25,
-		offsetY: 15
+		offsetY: 12
 	}
 };
 
 // Projectile object -- created every time a player 'fires' a weapon
 // Right now it's fairly basic - an init function and an update function
 game.projectile = me.ObjectEntity.extend({
-	init: function(x, y, gun, owner) {
+	init: function (x, y, gun, owner) {
 		// Basic init
 		var self = this;
 		self.gun = gun;
@@ -83,10 +83,17 @@ game.projectile = me.ObjectEntity.extend({
 			self.pos.x = self.owner.pos.x + self.gun.offsetX;
 		} else {
 			self.facing = 'left';
+			self.flipX(true);
 			self.vel.x = -gun.speed;
 			self.pos.x = self.owner.pos.x;
 		}
 		self.pos.y = self.owner.pos.y + self.gun.offsetY;
+	},
+	
+	explode: function() {
+		var boom = new game.Explosion(this.pos.x, this.pos.y);
+		me.game.add(boom, 3);
+		me.game.sort();
 	},
 	
 	update: function() {
@@ -132,8 +139,9 @@ game.projectile = me.ObjectEntity.extend({
 				//placeholder for bounces (grenades);
 			// Otherwise explode and/or destroy the projectile
 			} else {
-				if(self.gun.explode){
-					//place holder for explosions
+				if(self.gun.explode && !self.exploded){
+					self.exploded = true;
+					self.explode();
 					me.game.remove(self);
 				} else {
 					me.game.remove(self);
@@ -141,8 +149,9 @@ game.projectile = me.ObjectEntity.extend({
 			}
 		// Handling for when it hits a slope - TO DO
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
-			if(self.gun.explode){
-					//place holder for explosions
+			if(self.gun.explode && !self.exploded){
+					self.exploded = true;
+					self.explode();
 					me.game.remove(self);
 			} else {
 				me.game.remove(self);
@@ -150,12 +159,7 @@ game.projectile = me.ObjectEntity.extend({
 		// If it doesn't hit anything, explode or destroy it after 2000ms
 		} else {
 			setTimeout(function() {
-				if(self.gun.explode){
-					//place holder for explosions
 					me.game.remove(self);
-				} else {
-					me.game.remove(self);
-				}
 			}, 2000);
 		}
 		
@@ -225,6 +229,35 @@ game.weapon = me.SpriteObject.extend({
 		//update the sprite
 		this.updatePos();		
 	
+		return true;
+	}
+});
+
+game.Explosion = me.ObjectEntity.extend({
+	init: function(x, y) {
+		var self = this;
+		self.parent(x, y, {image: "explode", spritewidth: 32});
+		self.init = true;
+		this.gravity = 0;
+		
+		// add explosion sprite
+		//self.addAnimation("explode", [0, 1, 2, 3, 4]);
+		//self.setCurrentAnimation("explode");
+	},
+	update: function() {
+		var self = this;
+		
+		this.vel.x += -this.accel.x * me.timer.tick;
+		
+		if(self.init) {
+			setTimeout(function() {
+				me.game.remove(self);
+			}, 500);
+			self.init = false;
+		}
+		
+		self.updateMovement();
+		
 		return true;
 	}
 });

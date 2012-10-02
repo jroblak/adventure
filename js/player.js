@@ -9,7 +9,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
 		// Set basic stuff - walk/jump speed, shooting, weapons
 		self.setVelocity(3, 10);
 		self.shooting = false;
-		self.weapons = [game.weapons.basic, game.weapons.machinegun];
+		self.weapons = [game.weapons.basic, game.weapons.machinegun, game.weapons.rocket];
 		self.currentWep = 0;
 		
 		// TO DO - Add animation for jumping and standing

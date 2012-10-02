@@ -4,13 +4,16 @@ game.resources = {
 	img: [
 		"bad1",
 		"basic",
+		"rocket",
 		"bWep",
 		"mGun",
+		"rGun",
 		"char",
 		"coin",
 		"map1tiles",
 		"parallaxbgmt",
-		"staticbgmt"
+		"staticbgmt",
+		"explode"
 	],
 	
 	map: [
