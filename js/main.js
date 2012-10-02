@@ -1,11 +1,12 @@
 // main.js
 var game = {
 	
-	onload: function() {
+	onload: function() {			
 			if (!me.video.init('gamescreen', 640, 480, false, 1.0)) {
 				console.log('browser doesn\'t support html 5 canvas');
 				return;
 			}
+			me.state.set(me.state.LOADING, new game.CustomLoadScreen());
 			
 			me.audio.init('mp3, ogg');
 			me.loader.onload = this.loaded.bind(this);

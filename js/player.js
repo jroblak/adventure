@@ -24,14 +24,12 @@ game.PlayerEntity = me.ObjectEntity.extend({
 	equipWep: function(wep) {
 		var self = this;
 		//check to make sure it exists before trying to remove it
-		if(gun) {
-			console.log("removing gun");
-			me.game.remove(gun);
-			console.log("removed gun");
+		if(self.gun) {
+			me.game.remove(self.gun);
 		}
 		self.equippedWep = wep; 
-		var gun = new game.weapon(self.pos.x, self.pos.y, self.equippedWep, self);
-		me.game.add(gun, 2);
+		self.gun = new game.weapon(self.pos.x, self.pos.y, self.equippedWep, self);
+		me.game.add(self.gun, 2);
 		me.game.sort();
 	},
 	
@@ -77,7 +75,6 @@ game.PlayerEntity = me.ObjectEntity.extend({
 			} else {
 				self.equipWep(self.weapons[self.currentWep]);
 			}
-			console.log(self.currentWep);
 		}
 		
 		//update player movement
