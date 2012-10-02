@@ -1,8 +1,13 @@
+// File that contains the various 'screens' for the game
+
+// PlayerScreen - loads and changes levels, controls HUD and score
 game.PlayScreen = me.ScreenObject.extend({
 		
 	onResetEvent: function() {
+		// Load the first level on a reset event
 		me.levelDirector.loadLevel('map1');
-			
+		
+		// Add the HUD and a score item to the HUD
 		me.game.addHUD(0, 0, 640, 40);
 		me.game.HUD.addItem("score", new game.ScoreObject(575, 1));
 		me.game.sort();
@@ -13,6 +18,7 @@ game.PlayScreen = me.ScreenObject.extend({
 	}
 });
 
+// The Custom load screen -- Placeholder taken directly from the default screen
 game.CustomLoadScreen = me.ScreenObject.extend({
 
 		init : function() {

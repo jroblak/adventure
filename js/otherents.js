@@ -1,3 +1,5 @@
+// Coin entity -- simple gets collected and adds to the score when it does.
+// TO DO: Fix so guns don't collect/destroy them
 game.CoinEntity = me.CollectableEntity.extend({
 	
 	init: function(x, y, settings) {
@@ -11,6 +13,7 @@ game.CoinEntity = me.CollectableEntity.extend({
 	}
 });
 
+// Score object for the HUD. Just text that gets updated
 game.ScoreObject = me.HUD_Item.extend({
 	init:function(x, y) {
 		this.parent(x, y);

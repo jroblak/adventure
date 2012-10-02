@@ -1,20 +1,26 @@
-// main.js
+// Game namespace
 var game = {
 	
-	onload: function() {			
+	onload: function() {	
+			// Initialize the video. If it doesn't work, alert the user
 			if (!me.video.init('gamescreen', 640, 480, false, 1.0)) {
 				console.log('browser doesn\'t support html 5 canvas');
 				return;
 			}
+			// Add a custom loading screen
 			me.state.set(me.state.LOADING, new game.CustomLoadScreen());
 			
+			// Initialize audio and the preloader
 			me.audio.init('mp3, ogg');
 			me.loader.onload = this.loaded.bind(this);
 			this.load();
 			
+			// Change the state to the loading screen
 			me.state.change(me.state.LOADING);
 	},
 	
+	// Loading function: takes the list of resources from resources.js and pushed them into an
+	// array to be handled by the preloader
 	load: function() {
 		var resources = [];
 		
@@ -37,6 +43,8 @@ var game = {
 		me.loader.preload(resources);
 	},
 	
+	// Loaded call back: sets a new playscreen state, adds the player, coins, and enemies,
+	// set the key bindings, and changes the state to the new playscreen
 	loaded: function() {
 			me.state.set(me.state.PLAY, new game.PlayScreen());
 			

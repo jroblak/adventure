@@ -1,3 +1,7 @@
+// Object that holds all of the games weapons (objects)
+// Each weapons object holds values for everything related to that weapon
+// They're all pretty self-explainitory
+// Put in separate file?
 game.weapons = {
 	basic: {
 		firerate: 500,
@@ -21,7 +25,7 @@ game.weapons = {
 		damage: 1,
 		speed: 4,
 		physics: {
-			weight: .05,
+			weight: .007,
 			mass: 1,
 			shape: 'round',
 			rico: false
@@ -32,21 +36,47 @@ game.weapons = {
 		gWidth: 10,
 		offsetX: 25,
 		offsetY: 15
+	},
+	rocket: {
+		firerate: 1000,
+		damage: 5,
+		speed: 3,
+		physics: {
+			weight: .008,
+			mass: 1,
+			shape: 'round',
+			rico: false
+		},		
+		gImg: "mGun",
+		projectile: "basic",
+		explode: true,
+		pWidth: 4,
+		gWidth: 10,
+		offsetX: 25,
+		offsetY: 15
 	}
 };
 
-game.bullet = me.ObjectEntity.extend({
+// Projectile object -- created every time a player 'fires' a weapon
+// Right now it's fairly basic - an init function and an update function
+game.projectile = me.ObjectEntity.extend({
 	init: function(x, y, gun, owner) {
+		// Basic init
 		var self = this;
-		
-		self.parent(x, y, {image: gun.projectile, spriteWidth: gun.pWidth});
-		self.gravity = gun.physics.weight;
 		self.gun = gun;
-		self.collidable = true;
 		self.owner = owner;
-		self.pos.y = self.owner.pos.y + self.gun.offsetY;
+		self.parent(x, y, {image: self.gun.projectile, spriteWidth: self.gun.pWidth});
+		
+		// TO DO:
+		// Implement new projectiles (rockets, flames, grenades
+		// Implement animations for special projectiles (rockets, flames, grenades)
 		
 		
+		//set up bullet physics
+		self.gravity = gun.physics.weight;
+		self.collidable = true;
+		
+		//set up initial position and direction
 		if(self.owner.facing == 'right') {
 			self.facing = 'right';
 			self.vel.x = gun.speed;
@@ -56,28 +86,39 @@ game.bullet = me.ObjectEntity.extend({
 			self.vel.x = -gun.speed;
 			self.pos.x = self.owner.pos.x;
 		}
+		self.pos.y = self.owner.pos.y + self.gun.offsetY;
 	},
 	
 	update: function() {
 		var self = this;
 		
+		// Update projectile position
+		// If it's ricocheting , convert angle to radians and use to adject movement
+		// If it's bouncing - TO DO
 		if(self.ricochet) {
 			self.pos.x += Math.cos((Math.PI/180)*self.angle)*self.vel.x;
 			self.pos.y += Math.sin((Math.PI/180)*self.angle)*self.vel.x;
+		} else if (self.bounce) {
 		} else {
-		
 			self.pos.x += self.vel.x;
 		}
 		
+		// Collision check objects
 		var res = me.game.collide(self);
 		var hit = self.updateMovement();
-
+		
+		// Checks collisions -- first checks to see if it hits an enemy object
+		// Next checks to see if it hits a tile, and if so what kind
+		// This is getting too jumbled; Find a way to do this better -
+		// break out into more function, put into the physics objects, etc.
 		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				res.obj.removeHP(self.gun.damage);
 				me.game.remove(self);
 			}
+		// If it hit a solid tile and hasn't ricocheted yet (to keep it simple/for now)
 		} else if(hit.xprop.type === 'solid' && !self.ricochet) {
+			// If the projectile is allowed to ricochet, set it's velocity, direction, and angle
 			if(self.gun.physics.rico) {
 				self.angle = game.physicsEngine.ranAngle(self.facing, 'solid');
 				self.ricochet = true;
@@ -86,23 +127,39 @@ game.bullet = me.ObjectEntity.extend({
 				setTimeout(function() {
 					me.game.remove(self);
 				}, 75);
+			// Else if it bounces, handle that - TO DO
 			} else if(self.gun.physics.bounce) {
 				//placeholder for bounces (grenades);
+			// Otherwise explode and/or destroy the projectile
 			} else {
 				if(self.gun.explode){
 					//place holder for explosions
+					me.game.remove(self);
 				} else {
 					me.game.remove(self);
 				}
 			}
+		// Handling for when it hits a slope - TO DO
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
-			me.game.remove(self);
+			if(self.gun.explode){
+					//place holder for explosions
+					me.game.remove(self);
+			} else {
+				me.game.remove(self);
+			}
+		// If it doesn't hit anything, explode or destroy it after 2000ms
 		} else {
 			setTimeout(function() {
-				me.game.remove(self);
+				if(self.gun.explode){
+					//place holder for explosions
+					me.game.remove(self);
+				} else {
+					me.game.remove(self);
+				}
 			}, 2000);
 		}
 		
+		// If the position changes, return true to update, otherwise don't
 		if (self.vel.x != 0 || self.vel.y != 0) {
 			self.parent(self);
 			return true;
@@ -112,17 +169,23 @@ game.bullet = me.ObjectEntity.extend({
 	}
 });
 
+// Game weapon Sprite Object -- simple sprite that moves with the player
+// Created/changes whenever the player equips a new weapon
 game.weapon = me.SpriteObject.extend({
 	init: function(x, y, gun, owner) {
+		// General init stuff
 		var self = this;
-		
+		self.owner = owner;
+		self.gun = gun;
 		self.parent(x, y, me.loader.getImage(gun.gImg), gun.gWidth);
+		
+		// Offsets - the sprite 'shadows' the player, so I used these to correct for that
+		// Not the optimal solution, but a quick easy hack and it mostly works
 		self.addOffset = 0;
 		self.moveOffset = 0;
 		self.jumpOffset = 0;
-		self.owner = owner;
-		self.gun = gun;
 		
+		// Correct for if the player is facing left when the gun is created
 		if(self.owner.facing == 'left') {
 			self.flipX(true);
 			self.addOffset = -26;
@@ -132,6 +195,7 @@ game.weapon = me.SpriteObject.extend({
 	updatePos: function() {
 		var self = this;
 		
+		// If the player is moving, add a offset to correct for the 'shadowing'
 		if (me.input.isKeyPressed('left')) {
 			self.moveOffset = -3;
 			self.flipX(true);
@@ -151,12 +215,14 @@ game.weapon = me.SpriteObject.extend({
 			self.jumpOffset = 0;
 		}
 		
+		// update the X, Y pos
 		self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset + self.moveOffset;
 		self.pos.y = self.owner.pos.y + self.gun.offsetY + self.jumpOffset;
 	},
 	
 	update: function() {
 		
+		//update the sprite
 		this.updatePos();		
 	
 		return true;
