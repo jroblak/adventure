@@ -3,6 +3,7 @@ game.resources = {
 		"bad1",
 		"basic",
 		"bWep",
+		"mGun",
 		"char",
 		"coin",
 		"map1tiles",
