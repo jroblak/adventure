@@ -92,7 +92,7 @@ game.projectile = me.ObjectEntity.extend({
 	
 	explode: function() {
 		var boom = new game.Explosion(this.pos.x, this.pos.y);
-		me.game.add(boom, 3);
+		me.game.add(boom, 2);
 		me.game.sort();
 	},
 	
@@ -242,6 +242,10 @@ game.Explosion = me.ObjectEntity.extend({
 		this.gravity = 0;
 		
 	},
+	
+	updatePosition: function() {
+	},
+	
 	update: function() {
 		var self = this;
 		
@@ -252,8 +256,13 @@ game.Explosion = me.ObjectEntity.extend({
 			self.init = false;
 		}
 		
-		self.updateMovement();
+		self.updatePosition();
 		
 		return true;
+	},
+	
+	draw: function(context, x, y) {
+		this.parent(context);
+        var viewport = me.game.viewport.pos;
 	}
 });
