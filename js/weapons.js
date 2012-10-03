@@ -179,19 +179,16 @@ game.projectile = me.ObjectEntity.extend({
 
 // Game weapon Sprite Object -- simple sprite that moves with the player
 // Created/changes whenever the player equips a new weapon
-game.weapon = me.SpriteObject.extend({
-	init: function(x, y, gun, owner) {
+game.weapon = me.AnimationSheet.extend({
+	init: function(x, y, image, sw, sh, owner, settings) {
 		// General init stuff
 		var self = this;
 		self.owner = owner;
-		self.gun = gun;
-		self.parent(x, y, me.loader.getImage(gun.gImg), gun.gWidth);
-		
+		self.gun = owner.equippedWep;
+		self.parent(x, y, me.loader.getImage(self.gun.gImg), self.gun.gWidth, self.gun.gWidth);
+		self.addOffet = 0;
 		// Offsets - the sprite 'shadows' the player, so I used these to correct for that
 		// Not the optimal solution, but a quick easy hack and it mostly works
-		self.addOffset = 0;
-		self.moveOffset = 0;
-		self.jumpOffset = 0;
 		
 		// Correct for if the player is facing left when the gun is created
 		if(self.owner.facing == 'left') {
@@ -200,40 +197,34 @@ game.weapon = me.SpriteObject.extend({
 		}
 	},
 	
-	updatePos: function() {
+	updatePosition: function() {
 		var self = this;
 		
 		// If the player is moving, add a offset to correct for the 'shadowing'
 		if (me.input.isKeyPressed('left')) {
-			self.moveOffset = -3;
 			self.flipX(true);
 			self.addOffset = -26;
 		} else if (me.input.isKeyPressed('right')) {
-			self.moveOffset = 3;
 			self.flipX(false);
 			self.addOffset = 0;
-		} else {
-			self.moveOffset = 0;
-		}
-		if (self.owner.jumping) {
-			self.jumpOffset = -4;
-		} else if (self.owner.falling) {
-			self.jumpOffset = 5;
-		} else {
-			self.jumpOffset = 0;
-		}
+		} 
 		
 		// update the X, Y pos
-		self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset + self.moveOffset;
-		self.pos.y = self.owner.pos.y + self.gun.offsetY + self.jumpOffset;
+		self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset;
+		self.pos.y = self.owner.pos.y + self.gun.offsetY;
 	},
 	
 	update: function() {
 		
 		//update the sprite
-		this.updatePos();		
+		this.updatePosition();		
 	
 		return true;
+	},
+	
+	draw: function(context, x, y) {
+		this.parent(context);
+        var viewport = me.game.viewport.pos;
 	}
 });
 

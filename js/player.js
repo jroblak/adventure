@@ -1,9 +1,10 @@
 // Player Entity - conrols the player (duh)
-game.PlayerEntity = me.ObjectEntity.extend({
+game.PlayerEntity = game.Sprite.extend({
 	
 	init: function(x, y, settings) {
 		// Init 
 		var self = this;
+		settings.compose = '[{"name":"player"}]';
 		self.parent(x, y, settings);
 		
 		// Set basic stuff - walk/jump speed, shooting, weapons
@@ -34,9 +35,11 @@ game.PlayerEntity = me.ObjectEntity.extend({
 			me.game.remove(self.gun);
 		}
 		self.equippedWep = wep; 
-		self.gun = new game.weapon(self.pos.x, self.pos.y, self.equippedWep, self);
-		me.game.add(self.gun, 2);
-		me.game.sort();
+		//self.gun = new game.weapon(self.pos.x, self.pos.y, self.equippedWep, self);
+		self.addCompositionItem({"name":"weapon","class":"game.weapon","image":"self.equippedWep.gImg","spritewidth":8,"spriteheight":8,"offsetx":6,"offsety":18});
+		//self.setCompositionOrder("weapon", "player");
+		//me.game.add(self.gun, 2);
+		//me.game.sort();
 	},
 	
 	// Function that shoots - just creates a new projectile object and adds it to the game

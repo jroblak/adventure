@@ -43,6 +43,15 @@ var game = {
 		me.loader.preload(resources);
 	},
 	
+	"isObject" : function isObject(object) {
+        try {
+            return (!Array.isArray(object) && Object.keys(object));
+        }
+        catch (e) {
+            return false;
+        }
+    },
+
 	// Loaded call back: sets a new playscreen state, adds the player, coins, and enemies,
 	// set the key bindings, and changes the state to the new playscreen
 	loaded: function() {

@@ -1,3 +1,20 @@
 body {
-	background: black;
+	background: #636363;
+	color: #FFFFFF;
+}
+
+#gamescreen {
+    margin: 0px auto;
+	margin-top: 50px;
+	width: 640px;
+	height: 480px;
+	border: 5px solid #363636;
+}
+
+#framecounter {
+	display: block;
+	width: 50%;
+	margin: 0px auto;
+	font-family: "Century Gothic";
+	font-size: 10px;
 }
