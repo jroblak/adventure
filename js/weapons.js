@@ -193,7 +193,13 @@ game.weapon = me.AnimationSheet.extend({
 		// Correct for if the player is facing left when the gun is created
 		if(self.owner.facing == 'left') {
 			self.flipX(true);
-			self.addOffset = -26;
+			self.addOffset = -self.gun.offsetX;
+			self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset;
+			self.pos.y = self.owner.pos.y + self.gun.offsetY;
+		} else {
+			self.addOffset = 0;
+			self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset;
+			self.pos.y = self.owner.pos.y + self.gun.offsetY;
 		}
 	},
 	
@@ -203,7 +209,7 @@ game.weapon = me.AnimationSheet.extend({
 		// If the player is moving, add a offset to correct for the 'shadowing'
 		if (me.input.isKeyPressed('left')) {
 			self.flipX(true);
-			self.addOffset = -26;
+			self.addOffset = -self.gun.offsetX;
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.addOffset = 0;

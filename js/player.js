@@ -36,7 +36,7 @@ game.PlayerEntity = game.Sprite.extend({
 		}
 		self.equippedWep = wep; 
 		//self.gun = new game.weapon(self.pos.x, self.pos.y, self.equippedWep, self);
-		self.addCompositionItem({"name":"weapon","class":"game.weapon","image":"self.equippedWep.gImg","spritewidth":8,"spriteheight":8,"offsetx":6,"offsety":18});
+		self.addCompositionItem({"name":"weapon","class":"game.weapon","image":"self.equippedWep.gImg","spritewidth":"8","spriteheight":"8"});
 		//self.setCompositionOrder("weapon", "player");
 		//me.game.add(self.gun, 2);
 		//me.game.sort();
