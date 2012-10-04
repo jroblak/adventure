@@ -67,10 +67,13 @@ game.projectile = me.ObjectEntity.extend({
 		self.owner = owner;
 		self.parent(x, y, {image: self.gun.projectile, spriteWidth: self.gun.pWidth});
 		
+		if(self.gun.explode) {
+			self.canBreakTile = true;
+		}
+		
 		// TO DO:
 		// Implement new projectiles (rockets, flames, grenades
 		// Implement animations for special projectiles (rockets, flames, grenades)
-		
 		
 		//set up bullet physics
 		self.gravity = gun.physics.weight;
@@ -91,7 +94,7 @@ game.projectile = me.ObjectEntity.extend({
 	},
 	
 	explode: function() {
-		var boom = new game.Explosion(this.pos.x, this.pos.y);
+		var boom = new game.Explosion(this.pos.x, this.pos.y, this.facing);
 		me.game.add(boom, 2);
 		me.game.sort();
 	},
@@ -114,6 +117,9 @@ game.projectile = me.ObjectEntity.extend({
 		var res = me.game.collide(self);
 		var hit = self.updateMovement();
 		
+		// console.log(res);
+		// console.log(hit);
+		
 		// Checks collisions -- first checks to see if it hits an enemy object
 		// Next checks to see if it hits a tile, and if so what kind
 		// This is getting too jumbled; Find a way to do this better -
@@ -125,10 +131,21 @@ game.projectile = me.ObjectEntity.extend({
 					self.explode();
 					self.exploded = true;
 				}	
-				me.game.remove(self);
-			}
+				me.game.remove(self);		
+			} 
+		}
+		
+		//
+		//  THIS IS EXTREMELY UGLY -- FIX WHEN IT'S WORKING
+		//  THIS IS EXTREMELY UGLY -- FIX WHEN IT'S WORKING
+		//
+		
 		// If it hit a solid tile and hasn't ricocheted yet (to keep it simple/for now)
-		} else if(hit.xprop.type === 'solid' && !self.ricochet) {
+		if(((hit.xprop.type === 'solid' || hit.yprop.type === 'solid' || hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable') && !self.ricochet) || (this.pos.x <= 5 || this.pos.y <=5)) {
+			//if we break a breakable tile, set it to avoid any further collisions
+			if(self.canBreakTile && (hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable')) {
+				hit.xprop.isCollidable = false;
+			}
 			// If the projectile is allowed to ricochet, set it's velocity, direction, and angle
 			if(self.gun.physics.rico) {
 				self.angle = game.physicsEngine.ranAngle(self.facing, 'solid');
@@ -142,7 +159,7 @@ game.projectile = me.ObjectEntity.extend({
 			} else if(self.gun.physics.bounce) {
 				//placeholder for bounces (grenades);
 			// Otherwise explode and/or destroy the projectile
-			} else {
+			}else {
 				if(self.gun.explode && !self.exploded){
 					self.exploded = true;
 					self.explode();
@@ -162,9 +179,9 @@ game.projectile = me.ObjectEntity.extend({
 			}
 		// If it doesn't hit anything, explode or destroy it after 2000ms
 		} else {
-			setTimeout(function() {
-					me.game.remove(self);
-			}, 2000);
+			if(!self.visible) {
+				me.game.remove(self);
+			}
 		}
 		
 		// If the position changes, return true to update, otherwise don't
@@ -235,11 +252,20 @@ game.weapon = me.AnimationSheet.extend({
 });
 
 game.Explosion = me.ObjectEntity.extend({
-	init: function(x, y) {
+	init: function(x, y, facing) {
 		var self = this;
 		self.parent(x, y, {image: "explode", spritewidth: 32});
 		self.init = true;
-		this.gravity = 0;
+		self.facing = facing;
+		self.gravity = 0;
+		self.animationspeed = 4;
+		
+		// offsets for explosion -- just subtract the offsets added to the rocket gun
+		// fix these 'magic' numbers later
+		this.pos.y -= 12;
+		if(self.facing === 'right') {
+			this.pos.x -= 25;
+		}
 		
 	},
 	
@@ -256,13 +282,8 @@ game.Explosion = me.ObjectEntity.extend({
 			self.init = false;
 		}
 		
-		self.updatePosition();
+		this.parent();
 		
 		return true;
-	},
-	
-	draw: function(context, x, y) {
-		this.parent(context);
-        var viewport = me.game.viewport.pos;
 	}
 });

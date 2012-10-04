@@ -8,17 +8,18 @@ game.PlayerEntity = game.Sprite.extend({
 		self.parent(x, y, settings);
 		
 		// Set basic stuff - walk/jump speed, shooting, weapons
-		self.setVelocity(3, 10);
+		self.setVelocity(10, 16);
 		self.shooting = false;
 		self.weapons = [game.weapons.basic, game.weapons.machinegun, game.weapons.rocket];
 		self.currentWep = 0;
+		self.hp = 10;
 		
 		// TO DO - Add animation for jumping and standing
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
 		self.setCurrentAnimation("walk");
 		
 		// Change the collision rect to match the sprite -- off fix when sprite finalized
-		self.updateColRect(4, 26, 12, 20);
+		self.updateColRect(4, 26, -1, 0);
 		self.facing = 'right';
 		
 		// Equip the basic weapon and set the viewport to follow the player

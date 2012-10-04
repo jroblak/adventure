@@ -18,5 +18,6 @@ game.resources = {
 	
 	map: [
 		"map1",
+		"map2"
 	]
 };

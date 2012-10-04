@@ -1,3 +1,16 @@
+// extened LevelEntity so that only our player triggers level changes, not any other objects
+game.LevelChangeEntity = me.LevelEntity.extend({
+	init: function(x, y, settings) {
+		this.parent(x, y, settings);
+	},
+	
+	onCollision: function(res, obj) {
+		if(obj.name === 'player') {
+			this.goTo(this.gotolevel);
+		}
+	}
+});
+
 // Coin entity -- simple gets collected and adds to the score when it does.
 // TO DO: Fix so guns don't collect/destroy them
 game.CoinEntity = me.CollectableEntity.extend({
@@ -6,10 +19,12 @@ game.CoinEntity = me.CollectableEntity.extend({
 		this.parent(x, y, settings);
 	},
 	
-	onCollision: function() {
-		me.game.HUD.updateItemValue("score", 250);
-		this.collidable = false;
-		me.game.remove(this);
+	onCollision: function(res, obj) {
+		if(obj.name === 'player') {
+			me.game.HUD.updateItemValue("score", 250);
+			this.collidable = false;
+			me.game.remove(this);
+		}
 	}
 });
 
