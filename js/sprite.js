@@ -1,5 +1,8 @@
+// Sprite object - borrowed graciously from Jason Oster's Neverwell Moor (http://parasyte.kodewerx.org/projects/lpcgame/)
+// Basically a composition manager for my player object
+
 game.Sprite = me.ObjectEntity.extend({
-    "init" : function init(x, y, settings) {
+    init: function(x, y, settings) {
         var self = this;
         var GUID = me.utils.createGUID();
 
@@ -40,7 +43,8 @@ game.Sprite = me.ObjectEntity.extend({
         }
     },
 
-    "addCompositionItem" : function addCompositionItem(item) {
+	// function that adds an item to the sprite
+    addCompositionItem: function(item) {
         var self = this;
 
         // Validate composition item format.
@@ -75,7 +79,7 @@ game.Sprite = me.ObjectEntity.extend({
 
         var image = (typeof(item.image) === "string" ? me.loader.getImage(item.image) : item.image);
 		
-        // `class` should usually be "me.AnimationSheet", but can be anything.
+        // creates a new object
         self.children[item.name] = new (getClass(item.class))(
             self.pos.x,
             self.pos.y,
@@ -88,7 +92,8 @@ game.Sprite = me.ObjectEntity.extend({
         self.composition.push(item.name);
     },
 
-    "setCompositionOrder" : function setCompositionOrder(name, target, after) {
+	// function that sets the 'order' that the sprites are drawn in
+    setCompositionOrder: function(name, target, after) {
         after = (after ? 1 : -1);
 
         var current_idx = this.composition.indexOf(name);
@@ -118,7 +123,7 @@ game.Sprite = me.ObjectEntity.extend({
         }
     },
 
-    "update" : function update() {
+    update: function() {
         var self = this;
         var results = [];
 
@@ -140,7 +145,7 @@ game.Sprite = me.ObjectEntity.extend({
         });
     },
 
-    "draw" : function draw(context) {
+    draw: function(context) {
         if (!this.composition) {
             this.parent(context);
             return;

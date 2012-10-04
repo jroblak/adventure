@@ -1,4 +1,4 @@
-// extened LevelEntity so that only our player triggers level changes, not any other objects
+// extend LevelEntity so that only our player triggers level changes, not any other objects
 game.LevelChangeEntity = me.LevelEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
