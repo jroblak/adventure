@@ -1,4 +1,8 @@
 // Player Entity - conrols the player (duh)
+// Extends a sprite object that draws the player as well as the gun at the same times
+// fixes 'gun' object shadowing the player, and allows for upgrades/armor/guns to be
+// drawn on/over the player
+
 game.PlayerEntity = game.Sprite.extend({
 	
 	init: function(x, y, settings) {
@@ -30,24 +34,14 @@ game.PlayerEntity = game.Sprite.extend({
 	// Function that equips a new weapon. If a gun exists, remove it, then generate a new
 	// gun SpriteObject and add it to the game
 	equipWep: function(wep) {
-		var self = this;
-		//check to make sure it exists before trying to remove it
-		if(self.gun) {
-			me.game.remove(self.gun);
-		}
-		self.equippedWep = wep; 
-		//self.gun = new game.weapon(self.pos.x, self.pos.y, self.equippedWep, self);
-		self.addCompositionItem({"name":"weapon","class":"game.weapon","image":"self.equippedWep.gImg","spritewidth":"8","spriteheight":"8"});
-		//self.setCompositionOrder("weapon", "player");
-		//me.game.add(self.gun, 2);
-		//me.game.sort();
+		this.equippedWep = wep; 
+		this.addCompositionItem({"name":"weapon","class":"game.weapon","image":"self.equippedWep.gImg","spritewidth":"8","spriteheight":"8"});
+		this.setCompositionOrder("weapon", "player");
 	},
 	
 	// Function that shoots - just creates a new projectile object and adds it to the game
 	shoot: function() {
-		var self = this;
-		
-		shot = new game.projectile(self.pos.x, self.pos.y, self.equippedWep, self);
+		shot = new game.projectile(this.pos.x, this.pos.y, this.equippedWep, this);
 		me.game.add(shot, 2);
 		me.game.sort();
 	},

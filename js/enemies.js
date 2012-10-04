@@ -23,20 +23,11 @@ game.EnemyEntity = me.ObjectEntity.extend({
 		this.type = me.game.ENEMY_OBJECT;
 	},
 	
-	// When the player collides with the enemy, make it flicker and destroy it (and add to score)
-	onCollision: function(res, obj) {
-		if(this.alive && (res.y > 0) && obj.falling) {
-			this.flicker(45);
-			this.collidable = false;
-			me.game.HUD.updateItemValue("score", 250);
-			me.game.remove(this);
-		} 
-	},
-	
 	// Function that removes 'hp' from the enemy if its attacked - called by the projectile
 	// object
 	removeHP: function(dmg) {
 		this.hp -= dmg;
+		this.flicker(45);
 		if(this.hp <= 0) {
 			me.game.remove(this);
 		}
@@ -44,8 +35,6 @@ game.EnemyEntity = me.ObjectEntity.extend({
 	
 	// Move the enemy
 	update: function() {
-		if(!this.visible)
-			return false;
 		
 		if(this.alive) {
 			if(this.walkLeft && this.pos.x <= this.startX) {

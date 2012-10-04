@@ -58,13 +58,13 @@ game.weapons = {
 };
 
 // Projectile object -- created every time a player 'fires' a weapon
-// Right now it's fairly basic - an init function and an update function
 game.projectile = me.ObjectEntity.extend({
 	init: function (x, y, gun, owner) {
-		// Basic init
+		// Basic init stuff
 		var self = this;
 		self.gun = gun;
 		self.owner = owner;
+		
 		self.parent(x, y, {image: self.gun.projectile, spriteWidth: self.gun.pWidth});
 		
 		if(self.gun.explode) {
@@ -72,10 +72,10 @@ game.projectile = me.ObjectEntity.extend({
 		}
 		
 		// TO DO:
-		// Implement new projectiles (rockets, flames, grenades
+		// Implement new projectiles (rockets, flames, grenades)
 		// Implement animations for special projectiles (rockets, flames, grenades)
 		
-		//set up bullet physics
+		//set up bullet "physics"
 		self.gravity = gun.physics.weight;
 		self.collidable = true;
 		
@@ -93,10 +93,20 @@ game.projectile = me.ObjectEntity.extend({
 		self.pos.y = self.owner.pos.y + self.gun.offsetY;
 	},
 	
+	//function that creates an explosion
 	explode: function() {
 		var boom = new game.Explosion(this.pos.x, this.pos.y, this.facing);
 		me.game.add(boom, 2);
 		me.game.sort();
+	},
+	
+	// function to remove/blowup projectiles
+	destroyMe: function() {
+		if(this.gun.explode && !this.exploded) {
+				this.explode();
+				this.exploded = true;
+			}	
+		me.game.remove(this);	
 	},
 	
 	update: function() {
@@ -127,60 +137,39 @@ game.projectile = me.ObjectEntity.extend({
 		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				res.obj.removeHP(self.gun.damage);
-				if(self.gun.explode && !self.exploded) {
-					self.explode();
-					self.exploded = true;
-				}	
-				me.game.remove(self);		
+				self.destroyMe();
 			} 
 		}
 		
-		//
-		//  THIS IS EXTREMELY UGLY -- FIX WHEN IT'S WORKING
-		//  THIS IS EXTREMELY UGLY -- FIX WHEN IT'S WORKING
-		//
-		
-		// If it hit a solid tile and hasn't ricocheted yet (to keep it simple/for now)
-		if(((hit.xprop.type === 'solid' || hit.yprop.type === 'solid' || hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable') && !self.ricochet) || (this.pos.x <= 5 || this.pos.y <=5)) {
-			//if we break a breakable tile, set it to avoid any further collisions
-			if(self.canBreakTile && (hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable')) {
+		// If it hit a solid or breakable tile
+		if (hit.xprop.type === 'solid' || hit.yprop.type === 'solid' || hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable') {
+			
+			//if we break a breakable tile, shut off its collision to allow the player to walk through
+			if (self.canBreakTile && (hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable')) {
 				hit.xprop.isCollidable = false;
 			}
+			
 			// If the projectile is allowed to ricochet, set it's velocity, direction, and angle
 			if(self.gun.physics.rico) {
 				self.angle = game.physicsEngine.ranAngle(self.facing, 'solid');
-				self.ricochet = true;
 				self.vel.x = (self.facing == 'right') ? -self.gun.speed : self.gun.speed;
 				self.facing = (self.facing == 'right') ? self.facing = 'left' : self.facing = 'right';
 				setTimeout(function() {
 					me.game.remove(self);
-				}, 75);
+				}, 25);
 			// Else if it bounces, handle that - TO DO
 			} else if(self.gun.physics.bounce) {
-				//placeholder for bounces (grenades);
-			// Otherwise explode and/or destroy the projectile
 			}else {
-				if(self.gun.explode && !self.exploded){
-					self.exploded = true;
-					self.explode();
-					me.game.remove(self);
-				} else {
-					me.game.remove(self);
-				}
+				self.destroyMe();
 			}
 		// Handling for when it hits a slope - TO DO
 		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
-			if(self.gun.explode && !self.exploded){
-					self.exploded = true;
-					self.explode();
-					me.game.remove(self);
-			} else {
-				me.game.remove(self);
-			}
-		// If it doesn't hit anything, explode or destroy it after 2000ms
+			self.destroyMe();
 		} else {
 			if(!self.visible) {
 				me.game.remove(self);
+			} else if (self.pos.x <= 0) {
+				self.destroyMe();
 			}
 		}
 		
@@ -204,9 +193,7 @@ game.weapon = me.AnimationSheet.extend({
 		self.gun = owner.equippedWep;
 		self.parent(x, y, me.loader.getImage(self.gun.gImg), self.gun.gWidth, self.gun.gWidth);
 		self.addOffet = 0;
-		// Offsets - the sprite 'shadows' the player, so I used these to correct for that
-		// Not the optimal solution, but a quick easy hack and it mostly works
-		
+
 		// Correct for if the player is facing left when the gun is created
 		if(self.owner.facing == 'left') {
 			self.flipX(true);
@@ -240,14 +227,10 @@ game.weapon = me.AnimationSheet.extend({
 	update: function() {
 		
 		//update the sprite
-		this.updatePosition();		
+		this.updatePosition();	
+		this.parent();
 	
 		return true;
-	},
-	
-	draw: function(context, x, y) {
-		this.parent(context);
-        var viewport = me.game.viewport.pos;
 	}
 });
 
@@ -261,17 +244,14 @@ game.Explosion = me.ObjectEntity.extend({
 		self.animationspeed = 4;
 		
 		// offsets for explosion -- just subtract the offsets added to the rocket gun
-		// fix these 'magic' numbers later
+		// fix these 'magic' numbers later theyre still not right
 		this.pos.y -= 12;
 		if(self.facing === 'right') {
 			this.pos.x -= 25;
 		}
 		
 	},
-	
-	updatePosition: function() {
-	},
-	
+
 	update: function() {
 		var self = this;
 		
