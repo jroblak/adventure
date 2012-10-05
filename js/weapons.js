@@ -1,7 +1,7 @@
 // Object that holds all of the games weapons (objects)
 // Each weapons object holds values for everything related to that weapon
 // They're all pretty self-explainitory
-// Put in separate file?
+
 game.weapons = {
 	basic: {
 		name: 'handgun',
@@ -117,17 +117,8 @@ game.projectile = me.ObjectEntity.extend({
 	
 	update: function() {
 		var self = this;
-		
-		// Update projectile position
-		// If it's ricocheting , convert angle to radians and use to adject movement
-		// If it's bouncing - TO DO
-		if(self.ricochet) {
-			self.pos.x += Math.cos((Math.PI/180)*self.angle)*self.vel.x;
-			self.pos.y += Math.sin((Math.PI/180)*self.angle)*self.vel.x;
-		} else if (self.bounce) {
-		} else {
-			self.pos.x += self.vel.x;
-		}
+
+		self.pos.x += self.vel.x;
 		
 		// Collision check objects
 		var res = me.game.collide(self);
@@ -155,26 +146,12 @@ game.projectile = me.ObjectEntity.extend({
 				self.canBreakTile = false;
 			}
 			
-			// If the projectile is allowed to ricochet, set it's velocity, direction, and angle
-			if(self.gun.physics.rico) {
-				self.angle = game.physicsEngine.ranAngle(self.facing, 'solid');
-				self.vel.x = (self.facing == 'right') ? -self.gun.speed : self.gun.speed;
-				self.facing = (self.facing == 'right') ? self.facing = 'left' : self.facing = 'right';
-				setTimeout(function() {
-					me.game.remove(self);
-				}, 25);
-			// Else if it bounces, handle that - TO DO
-			} else if(self.gun.physics.bounce) {
-			}else {
-				self.destroyMe();
-			}
-		// Handling for when it hits a slope - TO DO
-		} else if(hit.xprop.type === 'lslope' || hit.xprop.type === 'rslope' ) {
 			self.destroyMe();
+			
 		} else {
 			if(!self.visible) {
 				me.game.remove(self);
-			} else if (self.pos.x <= 0) {
+			} else {
 				self.destroyMe();
 			}
 		}
