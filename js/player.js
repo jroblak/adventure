@@ -13,7 +13,7 @@ game.PlayerEntity = game.Sprite.extend({
 		
 		// Set basic stuff - walk/jump speed, shooting, weapons
 		self.setVelocity(3, 10);
-		self.accel.y = 1;
+		self.accel.y = 1.5;
 		self.shooting = false;
 		self.weapons = [game.weapons.basic, game.weapons.machinegun, game.weapons.rocket];
 		self.equipped = [game.equipable.jetpack];
@@ -22,6 +22,7 @@ game.PlayerEntity = game.Sprite.extend({
 		self.hp = 10;
 		
 		// TO DO - Add animation for jumping and standing
+		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
 		self.setCurrentAnimation("walk");
 		
@@ -106,12 +107,10 @@ game.PlayerEntity = game.Sprite.extend({
 		}
 		if(me.input.isKeyPressed('fly')) {
 			if(this.equippedGear.name === 'jetpack') {
-				this.gravity = 0.35;
 				self.vel.y -= self.accel.y * me.timer.tick;
 			}
-		} else {
-			this.gravity = 1;
-		}
+		} 
+		
 		// Update player movement
 		self.updateMovement();
 		
