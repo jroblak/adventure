@@ -77,10 +77,6 @@ game.projectile = me.ObjectEntity.extend({
 			self.canBreakTile = true;
 		}
 		
-		// TO DO:
-		// Implement new projectiles (rockets, flames, grenades)
-		// Implement animations for special projectiles (rockets, flames, grenades)
-		
 		//set up bullet "physics"
 		self.gravity = gun.physics.weight;
 		self.collidable = true;
@@ -151,8 +147,6 @@ game.projectile = me.ObjectEntity.extend({
 		} else {
 			if(!self.visible) {
 				me.game.remove(self);
-			} else {
-				self.destroyMe();
 			}
 		}
 		
