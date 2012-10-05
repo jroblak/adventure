@@ -12,7 +12,7 @@ game.PlayerEntity = game.Sprite.extend({
 		self.parent(x, y, settings);
 		
 		// Set basic stuff - walk/jump speed, shooting, weapons
-		self.setVelocity(3, 10);
+		self.setVelocity(10, 10);
 		self.accel.y = 1.5;
 		self.shooting = false;
 		self.weapons = [game.weapons.basic, game.weapons.machinegun, game.weapons.rocket];

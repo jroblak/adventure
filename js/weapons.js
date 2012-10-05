@@ -149,10 +149,10 @@ game.projectile = me.ObjectEntity.extend({
 		
 		// If it hit a solid or breakable tile
 		if (hit.xprop.type === 'solid' || hit.yprop.type === 'solid' || hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable') {
-			
 			//if we break a breakable tile, shut off its collision to allow the player to walk through
-			if (self.canBreakTile && (hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable')) {
-				hit.xprop.isCollidable = false;
+			if (self.canBreakTile && (hit.xprop.type === 'break' || hit.yprop.type === 'break')) {
+				me.game.currentLevel.clearTile(hit.x, hit.y);
+				self.canBreakTile = false;
 			}
 			
 			// If the projectile is allowed to ricochet, set it's velocity, direction, and angle
