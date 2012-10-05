@@ -91,6 +91,14 @@ game.Sprite = me.ObjectEntity.extend({
         );
         self.composition.push(item.name);
     },
+	
+	removeCompositionItem: function(itemname) {
+        if(this.children[itemname]) {
+			me.game.remove(this.children[itemname]);
+			this.composition.splice(itemname, 1);
+		}
+
+    },
 
 	// function that sets the 'order' that the sprites are drawn in
     setCompositionOrder: function(name, target, after) {

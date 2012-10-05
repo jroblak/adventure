@@ -62,13 +62,14 @@ var game = {
 			me.entityPool.add("enemy", game.EnemyEntity);
 			me.entityPool.add("levelchange", game.LevelChangeEntity);
 			
-			me.debug.renderHitBox = true
+			// me.debug.renderHitBox = true
 			
 			me.input.bindKey(me.input.KEY.LEFT, "left");
 			me.input.bindKey(me.input.KEY.RIGHT, "right");
 			me.input.bindKey(me.input.KEY.X, "jump", true);
-			me.input.bindKey(me.input.KEY.Z, "shoot", false);
+			me.input.bindKey(me.input.KEY.Z, "shoot");
 			me.input.bindKey(me.input.KEY.C, "switch", true);
+			me.input.bindKey(me.input.KEY.SPACE, "fly");
 			
 			me.state.change(me.state.PLAY);
 			

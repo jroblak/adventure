@@ -13,7 +13,8 @@ game.resources = {
 		"map1tiles",
 		"parallaxbgmt",
 		"staticbgmt",
-		"explode"
+		"explode",
+		"jetpack"
 	],
 	
 	map: [

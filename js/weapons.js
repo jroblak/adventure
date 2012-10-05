@@ -4,6 +4,7 @@
 // Put in separate file?
 game.weapons = {
 	basic: {
+		name: 'handgun',
 		firerate: 500,
 		damage: 2,
 		speed: 5,
@@ -17,10 +18,12 @@ game.weapons = {
 		projectile: "basic",
 		pWidth: 4,
 		gWidth: 8,
+		gHeight: 8,
 		offsetX: 23,
 		offsetY: 15
 	},
 	machinegun: {
+		name: 'machinegun',
 		firerate: 150,
 		damage: 1,
 		speed: 4,
@@ -34,10 +37,12 @@ game.weapons = {
 		projectile: "basic",
 		pWidth: 4,
 		gWidth: 10,
+		gHeight: 10,
 		offsetX: 25,
 		offsetY: 15
 	},
 	rocket: {
+		name: 'rocket',
 		firerate: 1000,
 		damage: 5,
 		speed: 3,
@@ -52,6 +57,7 @@ game.weapons = {
 		explode: true,
 		pWidth: 6,
 		gWidth: 12,
+		gHeight: 12,
 		offsetX: 25,
 		offsetY: 12
 	}
@@ -191,7 +197,7 @@ game.weapon = me.AnimationSheet.extend({
 		var self = this;
 		self.owner = owner;
 		self.gun = owner.equippedWep;
-		self.parent(x, y, me.loader.getImage(self.gun.gImg), self.gun.gWidth, self.gun.gWidth);
+		self.parent(x, y, image, sw, sh);
 		self.addOffet = 0;
 
 		// Correct for if the player is facing left when the gun is created
