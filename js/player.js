@@ -113,7 +113,7 @@ game.PlayerEntity = game.Sprite.extend({
 		
 		// Update player movement
 		self.updateMovement();
-		
+	
 		// Check for collisions
 		var res = me.game.collide(self);
 		

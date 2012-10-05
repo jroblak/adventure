@@ -1,14 +1,15 @@
-// Object for a basic enemy -- Not really going to document this since it's just a placeholder
-// from the me tutorial
-game.EnemyEntity = me.ObjectEntity.extend({
+
+game.EnemyEntity = game.Sprite.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
 		settings.spritewidth = 32;
 		this.hp = 4;
+		this.aggroed = false;
+		this.firstCheck = true;
 		
 		this.parent(x, y, settings);
-		this.updateColRect(4, 26, 12, 20);
 		
+		//set up patrol route
 		this.startX = x;
 		// The settings object comes from Tiled - settings.width is the width of the object
 		// 'square' drawn in Tiled. This is used to create a path for the sprite to patrol around
@@ -17,7 +18,7 @@ game.EnemyEntity = me.ObjectEntity.extend({
 		this.pos.x = x + settings.width - settings.spritewidth;
 		this.walkLeft = true;
 		
-		this.setVelocity(4, 6);
+		this.setVelocity(2, 6);
 		
 		this.collidable = true;
 		this.type = me.game.ENEMY_OBJECT;
@@ -33,10 +34,36 @@ game.EnemyEntity = me.ObjectEntity.extend({
 		}
 	},
 	
+	checkLOS: function() {
+		// only get the player entity once -- don't want to run through the full object list
+		// every check
+		if(this.firstCheck) {
+			this.player = me.game.getEntityByName("player")[0];
+			this.firstCheck = false;
+		}
+
+		if(this.walkLeft) {
+			if(((this.pos.x - this.player.pos.x <= 100) && (this.pos.x - this.player.pos.x >= 0)) &&
+				(this.pos.y - this.player.pos.y <= 150) && (this.pos.y - this.player.pos.y >= 0)) {
+					return true;
+			}
+		} else {
+			if (((this.pos.x - this.player.pos.x >= -100) && (this.pos.x - this.player.pos.x <= 0)) &&
+				(this.pos.y - this.player.pos.y <= 150) && (this.pos.y - this.player.pos.y >= 0)) {
+					return true;
+			}
+		}
+		return false;
+	},
+	
 	// Move the enemy
 	update: function() {
 		
-		if(this.alive) {
+		this.aggroed = this.checkLOS();
+		
+		if(this.aggroed) {
+			console.log("shoot at player!");
+		} else {
 			if(this.walkLeft && this.pos.x <= this.startX) {
 				this.walkLeft = false;
 			} else if(!this.walkLeft && this.pos.x >= this.endX) {
@@ -45,8 +72,6 @@ game.EnemyEntity = me.ObjectEntity.extend({
 			
 			this.flipX(this.walkLeft);
 			this.vel.x += (this.walkLeft) ? -this.accel.x * me.timer.tick : this.accel.x * me.timer.tick;
-		} else {
-			this.vel.x = 0;
 		}
 		
 		this.updateMovement();
