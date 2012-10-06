@@ -12,18 +12,20 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.parent(x, y, settings);
 		
 		self.accel.y = 1.5;
-
+		self.setVelocity(3, 10);
+		
 		self.weapons.push(game.weapons.basic);
 		self.equipped.push(game.equipable.jetpack);
 		self.currentWep = 0;
 		self.currentGear = 0;
+		self.collidable = true;
 		
 		self.hp = 10;
-		
+		console.log(this.accel.x);
 		// TO DO - Add animation for jumping and standing
 		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
-		self.setCurrentAnimation("walk");
+		self.setCurrentAnimation("stand");
 		
 		// Change the collision rect to match the sprite -- off fix when sprite finalized
 		self.updateColRect(4, 26, -1, 0);
@@ -48,10 +50,12 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.flipX(true);
 			self.facing = 'left';
 			self.vel.x -= self.accel.x * me.timer.tick;
+			
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.facing = 'right';
 			self.vel.x += self.accel.x * me.timer.tick;
+			self.setCurrentAnimation("walk");
 		} else {
 			self.vel.x = 0;
 		}
@@ -98,7 +102,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 					self.vel.y -self.maxVel.y * me.timer.tick;
 					self.jumping = true;
 				} else {
-					// O DO: Add damage function
+					// TO DO: Add damage function
 					self.flicker(45);
 				}
 			}

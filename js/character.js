@@ -12,7 +12,7 @@ game.CharacterEntity = game.Sprite.extend({
 		self.parent(x, y, settings);
 		
 		// Set basic stuff - walk/jump speed, shooting, weapons
-		self.setVelocity(3, 10);
+		
 		self.attacking = false;
 		
 		self.weapons = [];
@@ -51,6 +51,10 @@ game.CharacterEntity = game.Sprite.extend({
 		this.equippedGear = gear;
 		this.addCompositionItem({"name":gear.name,"class":"game.gear","image":gear.image,"spritewidth":gear.width,"spriteheight":gear.height});
 		this.setCompositionOrder(this.name, gear.name);
+	},
+	
+	updateMovement: function() {
+		this.pos.x += 1;
 	},
 
 	update: function() {
