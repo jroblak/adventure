@@ -11,8 +11,6 @@ game.CharacterEntity = game.Sprite.extend({
 		settings.compose = '[{"name":"'+settings.name+'"}]';
 		self.parent(x, y, settings);
 		
-		// Set basic stuff - walk/jump speed, shooting, weapons
-		
 		self.attacking = false;
 		
 		self.weapons = [];
@@ -20,6 +18,7 @@ game.CharacterEntity = game.Sprite.extend({
 		
 		self.currentWep = null;
 		self.currentGear = null;
+		self.collidable = true;
 		
 		self.hp = 1;
 		
@@ -62,5 +61,6 @@ game.CharacterEntity = game.Sprite.extend({
 		this.updateMovement();
 
 		return this.parent();
+		
 	}
 });

@@ -54,7 +54,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.facing = 'right';
-			self.vel.x += self.accel.x * me.timer.tick;
+			self.pos.x += self.accel.x;
 			self.setCurrentAnimation("walk");
 		} else {
 			self.vel.x = 0;
