@@ -3,6 +3,10 @@
 // fixes 'gun' object shadowing the player, and allows for upgrades/armor/guns to be
 // drawn on/over the player
 
+// TO DO: Make more generic (character) and then use to extend a new player entity and enemy entity
+// doesn't make sense to duplicate the code among player and enemies
+// Maybe remove the shooting logic from here and move it to the weapon object
+
 game.PlayerEntity = game.Sprite.extend({
 	
 	init: function(x, y, settings) {
