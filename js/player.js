@@ -3,26 +3,21 @@
 // fixes 'gun' object shadowing the player, and allows for upgrades/armor/guns to be
 // drawn on/over the player
 
-// TO DO: Make more generic (character) and then use to extend a new player entity and enemy entity
-// doesn't make sense to duplicate the code among player and enemies
-// Maybe remove the shooting logic from here and move it to the weapon object
 
-game.PlayerEntity = game.Sprite.extend({
+game.PlayerEntity = game.CharacterEntity.extend({
 	
 	init: function(x, y, settings) {
 		// Init 
 		var self = this;
-		settings.compose = '[{"name":"player"}]';
 		self.parent(x, y, settings);
 		
-		// Set basic stuff - walk/jump speed, shooting, weapons
-		self.setVelocity(10, 10);
 		self.accel.y = 1.5;
-		self.shooting = false;
-		self.weapons = [game.weapons.basic, game.weapons.machinegun, game.weapons.rocket];
-		self.equipped = [game.equipable.jetpack];
+
+		self.weapons.push(game.weapons.basic);
+		self.equipped.push(game.equipable.jetpack);
 		self.currentWep = 0;
 		self.currentGear = 0;
+		
 		self.hp = 10;
 		
 		// TO DO - Add animation for jumping and standing
@@ -34,30 +29,7 @@ game.PlayerEntity = game.Sprite.extend({
 		self.updateColRect(4, 26, -1, 0);
 		self.facing = 'right';
 		
-		// Equip the basic weapon and set the viewport to follow the player
-		self.equipWep(self.weapons[self.currentWep]);
-		self.equipGear(self.equipped[self.currentGear]);
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
-	},
-	
-	// Function that equips a new weapon. Uses sprite composition 'manager' inherited from
-	// SpriteObject (sprite.js)
-	equipWep: function(wep) {
-		if(this.equippedWep) {
-			this.removeCompositionItem(this.equippedWep.name);
-		}
-		this.equippedWep = wep; 
-		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.gImg,"spritewidth":wep.gWidth,"spriteheight":wep.gHeight});
-		this.setCompositionOrder(wep.name, "player");
-	},
-	
-	equipGear: function(gear) {
-		if(this.equippedGear) {
-			this.removeCompositionItem(this.equippedGear.name);
-		}
-		this.equippedGear = gear;
-		this.addCompositionItem({"name":gear.name,"class":"game.gear","image":gear.image,"spritewidth":gear.width,"spriteheight":gear.height});
-		this.setCompositionOrder("player", gear.name);
 	},
 	
 	// Function that shoots - just creates a new projectile object and adds it to the game
@@ -68,7 +40,7 @@ game.PlayerEntity = game.Sprite.extend({
 	},
 	
 	// Update function to move/handle player keystrokes
-	update: function() {
+	updateMovement: function() {
 		var self = this;
 		
 		// Check for keystrokes - fairly obvious
@@ -91,12 +63,12 @@ game.PlayerEntity = game.Sprite.extend({
 		}
 		// Check if the player pressed the shoot button, and make sure that it isn't currently
 		// shooting (from gun's firerate)
-		if (me.input.isKeyPressed('shoot') && !self.shooting) {
+		if (me.input.isKeyPressed('shoot') && !self.attacking) {
 			self.shoot();
-			self.shooting = true;
+			self.attacking = true;
 			// Timeout to control firerate of the weapons (based on equipped weapon's firerate)
 			setTimeout(function() {
-				self.shooting = false;
+				self.attacking = false;
 			}, self.equippedWep.firerate);
 		}
 		// Check if switch weapon is pressed. If it is, switch to the next gun in the weapons array
@@ -114,9 +86,6 @@ game.PlayerEntity = game.Sprite.extend({
 				self.vel.y -= self.accel.y * me.timer.tick;
 			}
 		} 
-		
-		// Update player movement
-		self.updateMovement();
 	
 		// Check for collisions
 		var res = me.game.collide(self);
@@ -134,13 +103,5 @@ game.PlayerEntity = game.Sprite.extend({
 				}
 			}
 		}
-		
-		// If we moved report it to the engine to update animation
-		if (self.vel.x != 0 || self.vel.y != 0 ) {
-			self.parent(self);
-		}
-		
-		// If there is no movement or animation return false
-		return true;
 	}
 });
