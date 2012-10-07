@@ -24,13 +24,6 @@ game.CharacterEntity = game.Sprite.extend({
 		
 		self.collidable = true;
 		self.facing = 'right';
-		
-		if(self.currentWep) {
-			self.equipWep(self.weapons[self.currentWep]);
-		} 
-		if(self.currentWep) {
-			self.equipGear(self.equipped[self.currentGear]);
-		}
 	},
 	
 	// Function that equips a new weapon. Uses sprite composition 'manager' inherited from
@@ -73,13 +66,16 @@ game.CharacterEntity = game.Sprite.extend({
 
 	update: function() {
 		
-		//if(this.visible) {
+		if(this.visible) {
 			this.getMovements();
 			this.updateMovement();
-		//}
-		//if(this.vel.x != 0 || this.vel.y != 0) {
-	    	return this.parent();
-		//}
+		}
+		if(this.vel.x != 0 || this.vel.y != 0) {
+	    	this.parent(this);
+			return true;
+		}
+		
+		return false;
 		
 	}
 });

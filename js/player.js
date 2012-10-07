@@ -14,11 +14,10 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.setVelocity(3, 10);
 		
 		self.hp = 10;
-		console.log(this.accel.x);
 		
 		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
-		self.setCurrentAnimation("stand");
+		self.setCurrentAnimation("walk");
 		
 		// Change the collision rect to match the sprite -- off fix when sprite finalized
 		self.updateColRect(4, 26, -1, 0);
@@ -36,12 +35,10 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.flipX(true);
 			self.facing = 'left';
 			self.vel.x -= self.accel.x * me.timer.tick;
-			
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.facing = 'right';
 			self.vel.x += self.accel.x * me.timer.tick;
-			self.setCurrentAnimation("walk");
 		} else {
 			self.vel.x = 0;
 		}
