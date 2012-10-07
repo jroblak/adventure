@@ -52,16 +52,29 @@ game.CharacterEntity = game.Sprite.extend({
 		this.setCompositionOrder(this.name, gear.name);
 	},
 	
+	// Function that removes 'hp' from the enemy if its attacked - called by the projectile
+	// object
+	removeHP: function(dmg) {
+		this.hp -= dmg;
+		this.flicker(45);
+		if(this.hp <= 0) {
+			me.game.remove(this);
+		}
+	},
+	
 	getMovements: function() {
 		
 	},
 
 	update: function() {
 		
-		this.getMovements();
-		this.updateMovement();
-
-		return this.parent();
+		if(this.visible) {
+			this.getMovements();
+			this.updateMovement();
+		}
+		if(this.vel.x != 0 || this.vel.y != 0) {
+	    	return this.parent();
+		}
 		
 	}
 });

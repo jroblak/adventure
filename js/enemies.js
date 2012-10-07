@@ -1,5 +1,5 @@
 
-game.EnemyEntity = game.Sprite.extend({
+game.EnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
 		settings.spritewidth = 32;
