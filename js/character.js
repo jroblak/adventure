@@ -1,12 +1,6 @@
-
-// TO DO: Make more generic (character) and then use to extend a new player entity and enemy entity
-// doesn't make sense to duplicate the code among player and enemies
-// Maybe remove the shooting logic from here and move it to the weapon object
-
 game.CharacterEntity = game.Sprite.extend({
 	
 	init: function(x, y, settings) {
-		// Init 
 		var self = this;
 		settings.compose = '[{"name":"'+settings.name+'"}]';
 		self.parent(x, y, settings);
@@ -18,7 +12,6 @@ game.CharacterEntity = game.Sprite.extend({
 		
 		self.currentWep = null;
 		self.currentGear = null;
-		self.collidable = true;
 		
 		self.hp = 1;
 		
@@ -26,8 +19,6 @@ game.CharacterEntity = game.Sprite.extend({
 		self.facing = 'right';
 	},
 	
-	// Function that equips a new weapon. Uses sprite composition 'manager' inherited from
-	// SpriteObject (sprite.js)
 	equipWep: function(wep) {
 		if(this.equippedWep) {
 			this.removeCompositionItem(this.equippedWep.name);
@@ -46,8 +37,6 @@ game.CharacterEntity = game.Sprite.extend({
 		this.setCompositionOrder(this.name, gear.name);
 	},
 	
-	// Function that removes 'hp' from the enemy if its attacked - called by the projectile
-	// object
 	removeHP: function(dmg) {
 		this.hp -= dmg;
 		this.flicker(45);
@@ -61,7 +50,7 @@ game.CharacterEntity = game.Sprite.extend({
 	},
 	
 	getMovements: function() {
-		// add default movement
+		// add default movement for NPCs/Enemies
 	},
 
 	update: function() {
@@ -70,6 +59,7 @@ game.CharacterEntity = game.Sprite.extend({
 			this.getMovements();
 			this.updateMovement();
 		}
+		
 		if(this.vel.x != 0 || this.vel.y != 0) {
 	    	this.parent(this);
 			return true;
