@@ -42,7 +42,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	},
 	
 	// Update function to move/handle player keystrokes
-	updateMovement: function() {
+	getMovements: function() {
 		var self = this;
 		
 		// Check for keystrokes - fairly obvious
@@ -54,7 +54,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.facing = 'right';
-			self.pos.x += self.accel.x;
+			self.vel.x += self.accel.x * me.timer.tick;
 			self.setCurrentAnimation("walk");
 		} else {
 			self.vel.x = 0;

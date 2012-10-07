@@ -52,12 +52,13 @@ game.CharacterEntity = game.Sprite.extend({
 		this.setCompositionOrder(this.name, gear.name);
 	},
 	
-	updateMovement: function() {
-		this.pos.x += 1;
+	getMovements: function() {
+		
 	},
 
 	update: function() {
 		
+		this.getMovements();
 		this.updateMovement();
 
 		return this.parent();
