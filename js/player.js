@@ -11,18 +11,11 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		var self = this;
 		self.parent(x, y, settings);
 		
-		self.accel.y = 1.5;
 		self.setVelocity(3, 10);
-		
-		self.weapons.push(game.weapons.basic);
-		self.equipped.push(game.equipable.jetpack);
-		self.currentWep = 0;
-		self.currentGear = 0;
-		self.collidable = true;
 		
 		self.hp = 10;
 		console.log(this.accel.x);
-		// TO DO - Add animation for jumping and standing
+		
 		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
 		self.setCurrentAnimation("stand");
@@ -32,13 +25,6 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.facing = 'right';
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
-	},
-	
-	// Function that shoots - just creates a new projectile object and adds it to the game
-	shoot: function() {
-		shot = new game.projectile(this.pos.x, this.pos.y, this.equippedWep, this);
-		me.game.add(shot, 2);
-		me.game.sort();
 	},
 	
 	// Update function to move/handle player keystrokes
@@ -68,7 +54,8 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		// Check if the player pressed the shoot button, and make sure that it isn't currently
 		// shooting (from gun's firerate)
 		if (me.input.isKeyPressed('shoot') && !self.attacking) {
-			self.shoot();
+			// call attack function of weapon
+			// self.equippedWep.attack();
 			self.attacking = true;
 			// Timeout to control firerate of the weapons (based on equipped weapon's firerate)
 			setTimeout(function() {

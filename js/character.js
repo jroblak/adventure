@@ -22,6 +22,7 @@ game.CharacterEntity = game.Sprite.extend({
 		
 		self.hp = 1;
 		
+		self.collidable = true;
 		self.facing = 'right';
 		
 		if(self.currentWep) {
@@ -62,8 +63,12 @@ game.CharacterEntity = game.Sprite.extend({
 		}
 	},
 	
+	addHP: function(newhealth) {
+		this.hp += newhealth;
+	},
+	
 	getMovements: function() {
-		
+		// add default movement
 	},
 
 	update: function() {

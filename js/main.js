@@ -62,7 +62,7 @@ var game = {
 			me.entityPool.add("enemy", game.EnemyEntity);
 			me.entityPool.add("levelchange", game.LevelChangeEntity);
 			
-			// me.debug.renderHitBox = true
+			//me.debug.renderHitBox = true
 			
 			me.input.bindKey(me.input.KEY.LEFT, "left");
 			me.input.bindKey(me.input.KEY.RIGHT, "right");
