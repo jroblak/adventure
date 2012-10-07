@@ -73,13 +73,13 @@ game.CharacterEntity = game.Sprite.extend({
 
 	update: function() {
 		
-		if(this.visible) {
+		//if(this.visible) {
 			this.getMovements();
 			this.updateMovement();
-		}
-		if(this.vel.x != 0 || this.vel.y != 0) {
+		//}
+		//if(this.vel.x != 0 || this.vel.y != 0) {
 	    	return this.parent();
-		}
+		//}
 		
 	}
 });

@@ -53,7 +53,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		}
 		// Check if the player pressed the shoot button, and make sure that it isn't currently
 		// shooting (from gun's firerate)
-		if (me.input.isKeyPressed('shoot') && !self.attacking) {
+		if (me.input.isKeyPressed('attack') && !self.attacking) {
 			// call attack function of weapon
 			// self.equippedWep.attack();
 			self.attacking = true;
