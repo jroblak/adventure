@@ -78,7 +78,6 @@ game.Sprite = me.ObjectEntity.extend({
         }
 
         var image = (typeof(item.image) === "string" ? me.loader.getImage(item.image) : item.image);
-		
         // creates a new object
         self.children[item.name] = new (getClass(item.class))(
             self.pos.x,
@@ -89,6 +88,7 @@ game.Sprite = me.ObjectEntity.extend({
             self,
             item
         );
+
         self.composition.push(item.name);
     },
 	

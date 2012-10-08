@@ -1,4 +1,4 @@
-game.story = ["Move Mr. Black with the Arrow Keys", "Press X to Jump"];
+game.story = ["Move dude with the Arrow Keys", "Press X to Jump"];
 
 // extend LevelEntity so that only our player triggers level changes, not any other objects
 game.LevelChangeEntity = me.LevelEntity.extend({
@@ -21,7 +21,7 @@ game.StoryChangeEntity = me.LevelEntity.extend({
 	
 	onCollision: function(res, obj) {
 		if(obj.name === 'player' && this.enabled) {
-			obj.triggerStory(this.story);
+			me.game.HUD.setItemValue("story", "attack with x");
 			this.enabled = false;
 		}
 	}
@@ -48,7 +48,7 @@ game.CoinEntity = me.CollectableEntity.extend({
 game.ScoreObject = me.HUD_Item.extend({
 	init:function(x, y) {
 		this.parent(x, y);
-		this.font = new me.Font('century gothic', 24, 'black');
+		this.font = new me.Font('century gothic', 24, 'white');
 	},
 	draw: function(context, x, y){
 		this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);

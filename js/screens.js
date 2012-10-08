@@ -10,6 +10,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		// Add the HUD and a score item to the HUD
 		me.game.addHUD(0, 0, 640, 40);
 		me.game.HUD.addItem("score", new game.ScoreObject(575, 1));
+		
 		me.game.sort();
 	},
 		

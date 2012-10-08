@@ -23,7 +23,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.animTimeout = false;
 		self.storyX = this.pos.x - me.game.viewport.pos.x;
 		self.storyY = this.pos.y - me.game.viewport.pos.y;
-		self.storyTeller = new me.Font('century gothic', self.storySize, 'black');
+		self.storyTeller = new me.Font('century gothic', 14, 'black');
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
@@ -110,20 +110,19 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	
 		var res = me.game.collide(self);
 		
-		/*
 		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
-				self.removeHP(res.obj.dmg);
+				//self.removeHP(res.obj.dmg);
 				self.flicker(45);
 			}
 		}
-		*/
+		
 	},
 	
 	draw: function(context) {
 		this.parent(context);
 		if(this.storyUpdate) {
-			this.storyTeller.set('century gothic', this.storySize, 'black')
+			this.storyTeller.set('century gothic', this.storySize, 'black');
 			this.storyTeller.draw(context, this.checkStory(), this.storyX, this.storyY); 
 		}
 	}

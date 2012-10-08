@@ -26,7 +26,7 @@ game.CharacterEntity = game.Sprite.extend({
 			this.removeCompositionItem(this.equippedWep.name);
 		}
 		this.equippedWep = wep; 
-		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.gImg,"spritewidth":wep.wWidth,"spriteheight":wep.wHeight});
+		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.image, "spritewidth":wep.wWidth,"spriteheight":wep.wHeight});
 		this.setCompositionOrder(this.name, wep.name);
 	},
 	
@@ -42,6 +42,7 @@ game.CharacterEntity = game.Sprite.extend({
 	removeHP: function(dmg) {
 		this.hp -= dmg;
 		this.flicker(45);
+		console.log('kill');
 		if(this.hp <= 0) {
 			me.game.remove(this);
 		}

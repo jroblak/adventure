@@ -2,13 +2,13 @@ game.EnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
 		settings.spritewidth = 32;
-		this.hp = 4;
+		
+		this.hp = 1;
 		this.aggroed = false;
 		this.firstCheck = true;
 		this.dmg = 1;
 		
 		this.parent(x, y, settings);
-		
 
 		this.startX = x;
 		this.endX = x + settings.width - settings.spritewidth;

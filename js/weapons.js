@@ -5,7 +5,7 @@ game.weapons = {
 		rate: 500,
 		damage: 1,
 		speed: null,
-		gImg: "sword",
+		image: "sword",
 		projectile: null,
 		pWidth: null,
 		pHeight: null,
@@ -20,7 +20,7 @@ game.weapons = {
 		rate: 500,
 		damage: 1,
 		speed: null,
-		gImg: "wipwhip",
+		image: "wipwhip",
 		projectile: null,
 		pWidth: null,
 		pHeight: null,
@@ -28,120 +28,27 @@ game.weapons = {
 		wHeight: 32,
 		offsetX: 5,
 		offsetY: -4,
-		addOffset: -30
+		addOffset: -30,
+		colRect: [7, 15, 15, 10],
+		attackRect: [4, 46, 0, 32]
 	}
 };
 
-// Projectile object -- created every time a player 'fires' a weapon
-game.projectile = me.ObjectEntity.extend({
-	init: function (x, y, gun, owner) {
-		// Basic init stuff
-		var self = this;
-		self.gun = gun;
-		self.owner = owner;
-		
-		self.parent(x, y, {image: self.gun.projectile, spriteWidth: self.gun.pWidth});
-		
-		if(self.gun.explode) {
-			self.canBreakTile = true;
-		}
-		
-		//set up bullet "physics"
-		self.gravity = gun.physics.weight;
-		self.collidable = true;
-		
-		//set up initial position and direction
-		if(self.owner.facing == 'right') {
-			self.facing = 'right';
-			self.vel.x = gun.speed;
-			self.pos.x = self.owner.pos.x + self.gun.offsetX;
-		} else {
-			self.facing = 'left';
-			self.flipX(true);
-			self.vel.x = -gun.speed;
-			self.pos.x = self.owner.pos.x;
-		}
-		self.pos.y = self.owner.pos.y + self.gun.offsetY;
-	},
-	
-	//function that creates an explosion
-	explode: function() {
-		var boom = new game.Explosion(this.pos.x, this.pos.y, this.facing);
-		me.game.add(boom, 2);
-		me.game.sort();
-	},
-	
-	// function to remove/blowup projectiles
-	destroyMe: function() {
-		if(this.gun.explode && !this.exploded) {
-				this.explode();
-				this.exploded = true;
-			}	
-		me.game.remove(this);	
-	},
-	
-	update: function() {
-		var self = this;
-
-		self.pos.x += self.vel.x;
-		
-		// Collision check objects
-		var res = me.game.collide(self);
-		var hit = self.updateMovement();
-		
-		// console.log(res);
-		// console.log(hit);
-		
-		// Checks collisions -- first checks to see if it hits an enemy object
-		// Next checks to see if it hits a tile, and if so what kind
-		// This is getting too jumbled; Find a way to do this better -
-		// break out into more function, put into the physics objects, etc.
-		if(res) {
-			if(res.obj.type == me.game.ENEMY_OBJECT) {
-				res.obj.removeHP(self.gun.damage);
-				self.destroyMe();
-			} 
-		}
-		
-		// If it hit a solid or breakable tile
-		if (hit.xprop.type === 'solid' || hit.yprop.type === 'solid' || hit.xprop.type === 'breakable' || hit.yprop.type === 'breakable') {
-			//if we break a breakable tile, shut off its collision to allow the player to walk through
-			if (self.canBreakTile && (hit.xprop.type === 'break' || hit.yprop.type === 'break')) {
-				me.game.currentLevel.clearTile(hit.x, hit.y);
-				self.canBreakTile = false;
-			}
-			
-			self.destroyMe();
-			
-		} else {
-			if(!self.visible) {
-				me.game.remove(self);
-			}
-		}
-		
-		// If the position changes, return true to update, otherwise don't
-		if (self.vel.x != 0 || self.vel.y != 0) {
-			self.parent(self);
-			return true;
-		}
-		
-		return false;
-	}
-});
-
-// Game weapon Sprite Object -- simple sprite that moves with the player
-// Created/changes whenever the player equips a new weapon
-game.weapon = me.AnimationSheet.extend({
+game.weapon = me.ObjectEntity.extend({
 	init: function(x, y, image, sw, sh, owner, settings) {
 		// General init stuff
 		var self = this;
 		self.owner = owner;
 		self.weapon = owner.equippedWep;
-		self.parent(x, y, image, sw, sh);
+		self.parent(x, y, {image: self.weapon.image, spritewidth: sw, spriteheight: sh});
+		
+		self.collidable = true;
 		
 		self.addOffet = 0;
 		self.addAnimation("static", [0]);
 		self.setCurrentAnimation("static");
+		
+		//self.updateColRect(self.weapon.colRect[0], self.weapon.colRect[1], self.weapon.colRect[2], self.weapon.colRect[3]);
 		
 		if(self.weapon.animation.length > 1) {
 			self.addAnimation("attack", self.weapon.animation);
@@ -162,16 +69,19 @@ game.weapon = me.AnimationSheet.extend({
 	
 	attack: function() {
 		var self = this;
+		//self.updateColRect(self.weapon.attackRect[0], self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
 		self.setCurrentAnimation("attack");
+		
 		setTimeout(function() {
+			//self.updateColRect(self.weapon.colRect[0], self.weapon.colRect[1], self.weapon.colRect[2], self.weapon.colRect[3]);
 			self.setCurrentAnimation("static");
 		}, 500);
+		
 	},
 	
 	updatePosition: function() {
 		var self = this;
 		
-		// If the player is moving, add a offset to correct for the 'shadowing'
 		if (me.input.isKeyPressed('left')) {
 			self.flipX(true);
 			self.addOffset = self.weapon.addOffset;
@@ -189,8 +99,26 @@ game.weapon = me.AnimationSheet.extend({
 			}, self.weapon.rate);
 		}
 		
+		var res = me.game.collide(self);
+		
+		if(res) {
+			if(res.obj.type == me.game.ENEMY_OBJECT) {
+				console.log('hit');
+				res.obj.removeHP(self.weapon.damage);
+			} 
+		}
+		
 		self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
 		self.pos.y = self.owner.pos.y + self.weapon.offsetY;
+		
+		var res = me.game.collide(this);
+		
+		if(res) {
+			//console.log(res);
+			if(res.obj.type == me.game.ENEMY_OBJECT) {
+				res.obj.removeHP(this.weapon.damage);
+			} 
+		}
 	},
 	
 	update: function() {
