@@ -102,8 +102,8 @@ game.weapon = me.ObjectEntity.extend({
 		var res = me.game.collide(self);
 		
 		if(res) {
+			console.log(res);
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
-				console.log('hit');
 				res.obj.removeHP(self.weapon.damage);
 			} 
 		}
@@ -111,19 +111,14 @@ game.weapon = me.ObjectEntity.extend({
 		self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
 		self.pos.y = self.owner.pos.y + self.weapon.offsetY;
 		
-		var res = me.game.collide(this);
-		
-		if(res) {
-			//console.log(res);
-			if(res.obj.type == me.game.ENEMY_OBJECT) {
-				res.obj.removeHP(this.weapon.damage);
-			} 
-		}
 	},
 	
 	update: function() {
 		this.updatePosition();
+		
 		this.parent(this);
+		
+		return true;
 	}
 });
 
