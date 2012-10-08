@@ -27,7 +27,7 @@ game.CharacterEntity = game.Sprite.extend({
 		}
 		this.equippedWep = wep; 
 		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.gImg,"spritewidth":wep.wWidth,"spriteheight":wep.wHeight});
-		this.setCompositionOrder(wep.name, this.name);
+		this.setCompositionOrder(this.name, wep.name);
 	},
 	
 	equipGear: function(gear) {

@@ -5,6 +5,7 @@ game.resources = {
 		"bad1",
 		"basic",
 		"sword",
+		"wipwhip",
 		"rocket",
 		"bWep",
 		"mGun",

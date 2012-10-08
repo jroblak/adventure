@@ -13,6 +13,21 @@ game.weapons = {
 		wHeight: 12,
 		offsetX: 23,
 		offsetY: 15
+	},
+	whip: {
+		name: 'whip',
+		animation: [1, 2, 3, 4],
+		rate: 500,
+		damage: 1,
+		speed: null,
+		gImg: "wipwhip",
+		projectile: null,
+		pWidth: null,
+		pHeight: null,
+		wWidth: 51,
+		wHeight: 32,
+		offsetX: 5,
+		offsetY: -4
 	}
 };
 
@@ -192,8 +207,6 @@ game.Explosion = me.ObjectEntity.extend({
 		self.gravity = 0;
 		self.animationspeed = 4;
 		
-		// offsets for explosion -- just subtract the offsets added to the rocket gun
-		// fix these 'magic' numbers later theyre still not right
 		this.pos.y -= 12;
 		if(self.facing === 'right') {
 			this.pos.x -= 25;

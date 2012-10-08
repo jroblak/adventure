@@ -13,7 +13,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.setCurrentAnimation("stand");
 		
 		self.updateColRect(4, 26, -1, 0);
-		self.equipWep(game.weapons.sword);
+		self.equipWep(game.weapons.whip);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
@@ -44,6 +44,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
+		/*
 		if(me.input.isKeyPressed('switch')) {
 			if(!self.weapons[++self.currentWep]) {
 				self.currentWep = 0;
@@ -59,13 +60,14 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		} 
 	
-		//var res = me.game.collide(self);
+		var res = me.game.collide(self);
 		
-		/*if(res) {
+		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				self.removeHP(res.obj.dmg);
 				self.flicker(45);
 			}
-		}*/
+		}
+		*/
 	}
 });
