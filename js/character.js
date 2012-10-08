@@ -64,7 +64,6 @@ game.CharacterEntity = game.Sprite.extend({
 			if(self.standing) {
 				return;
 			} else {
-				console.log('stand');
 				this.standing = true;
 				this.animated = false;
 				this.setCurrentAnimation("stand");

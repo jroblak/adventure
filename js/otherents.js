@@ -38,3 +38,8 @@ game.ScoreObject = me.HUD_Item.extend({
 		this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);
 	}	
 });
+
+game.story = {
+	start: "where am i..??",
+	next: "test 123"
+};

@@ -15,7 +15,29 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.updateColRect(4, 26, -1, 0);
 		self.equipWep(game.weapons.whip);
 		
+		self.storySize = 14;
+		self.fade = 10;
+		self.animTimeout = false;
+		self.storyX = this.pos.x - me.game.viewport.pos.x;
+		self.storyY = this.pos.y - me.game.viewport.pos.y;
+		self.storyTeller = new me.Font('century gothic', self.storySize, 'black');
+		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
+	},
+	
+	checkStory: function() {
+		var self = this;
+		self.storyX = this.pos.x - me.game.viewport.pos.x + self.fade;
+		self.storyY = this.pos.y - me.game.viewport.pos.y - self.fade;
+		if(!self.animTimeout) {
+			self.storySize -= .05;
+			self.fade += .5;
+			self.animTimeout = true;
+			setTimeout(function () {
+				self.animTimeout = false;
+			}, 5);
+		}
+		return game.story.start;
 	},
 	
 	// Update function to move/handle player keystrokes
@@ -69,5 +91,11 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		*/
+	},
+	
+	draw: function(context) {
+		this.parent(context);
+		this.storyTeller.set('century gothic', this.storySize, 'black')
+		this.storyTeller.draw(context, this.checkStory(), this.storyX, this.storyY); 
 	}
 });
