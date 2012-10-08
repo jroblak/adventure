@@ -35,11 +35,11 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		
 		if(!self.animTimeout) {
 			self.storySize -= .05;
-			self.fade += .5;
+			self.fade += 1;
 			self.animTimeout = true;
 			setTimeout(function () {
 				self.animTimeout = false;
-			}, 5);
+			}, 100);
 		}
 		
 		if(self.storyResetter) {

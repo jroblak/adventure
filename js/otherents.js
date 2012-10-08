@@ -1,4 +1,4 @@
-game.story = ["where am i..??", "test 123"];
+game.story = ["Move Mr. Black with the Arrow Keys", "Press X to Jump"];
 
 // extend LevelEntity so that only our player triggers level changes, not any other objects
 game.LevelChangeEntity = me.LevelEntity.extend({
@@ -16,11 +16,13 @@ game.LevelChangeEntity = me.LevelEntity.extend({
 game.StoryChangeEntity = me.LevelEntity.extend({
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
+		this.enabled = true;
 	},
 	
 	onCollision: function(res, obj) {
-		if(obj.name === 'player') {
-			obj.triggerStory();
+		if(obj.name === 'player' && this.enabled) {
+			obj.triggerStory(this.story);
+			this.enabled = false;
 		}
 	}
 });
