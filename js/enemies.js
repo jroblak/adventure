@@ -22,7 +22,6 @@ game.EnemyEntity = game.CharacterEntity.extend({
 	
 	checkLOS: function() {
 		if(this.firstCheck) {
-			console.log('here');
 			this.player = me.game.getEntityByName("player")[0];
 			this.firstCheck = false;
 		}

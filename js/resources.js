@@ -4,6 +4,7 @@ game.resources = {
 	img: [
 		"bad1",
 		"basic",
+		"sword",
 		"rocket",
 		"bWep",
 		"mGun",

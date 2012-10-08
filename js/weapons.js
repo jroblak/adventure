@@ -1,65 +1,18 @@
-// Object that holds all of the games weapons (objects)
-// Each weapons object holds values for everything related to that weapon
-// They're all pretty self-explainitory
-
 game.weapons = {
-	basic: {
-		name: 'handgun',
-		firerate: 500,
-		damage: 2,
-		speed: 5,
-		physics: {
-			weight: .005,
-			mass: 1,
-			shape: 'round',
-			rico: true
-		},
-		gImg: "bWep",
-		projectile: "basic",
-		pWidth: 4,
-		gWidth: 8,
-		gHeight: 8,
+	sword: {
+		name: 'sword',
+		animation: [1, 2, 3, 4],
+		rate: 500,
+		damage: 1,
+		speed: null,
+		gImg: "sword",
+		projectile: null,
+		pWidth: null,
+		pHeight: null,
+		wWidth: 12,
+		wHeight: 12,
 		offsetX: 23,
 		offsetY: 15
-	},
-	machinegun: {
-		name: 'machinegun',
-		firerate: 150,
-		damage: 1,
-		speed: 4,
-		physics: {
-			weight: .007,
-			mass: 1,
-			shape: 'round',
-			rico: false
-		},		
-		gImg: "mGun",
-		projectile: "basic",
-		pWidth: 4,
-		gWidth: 10,
-		gHeight: 10,
-		offsetX: 25,
-		offsetY: 15
-	},
-	rocket: {
-		name: 'rocket',
-		firerate: 1000,
-		damage: 5,
-		speed: 3,
-		physics: {
-			weight: .008,
-			mass: 10,
-			shape: 'round',
-			rico: false
-		},		
-		gImg: "rGun",
-		projectile: "rocket",
-		explode: true,
-		pWidth: 6,
-		gWidth: 12,
-		gHeight: 12,
-		offsetX: 25,
-		offsetY: 12
 	}
 };
 
@@ -167,21 +120,36 @@ game.weapon = me.AnimationSheet.extend({
 		// General init stuff
 		var self = this;
 		self.owner = owner;
-		self.gun = owner.equippedWep;
+		self.weapon = owner.equippedWep;
 		self.parent(x, y, image, sw, sh);
+		
 		self.addOffet = 0;
-
-		// Correct for if the player is facing left when the gun is created
+		self.addAnimation("static", [0]);
+		self.setCurrentAnimation("static");
+		
+		if(self.weapon.animation.length > 1) {
+			self.addAnimation("attack", self.weapon.animation);
+			self.animated = true;
+		} 
+		
+		// Correct for if the player is facing left when the weapon is created
 		if(self.owner.facing == 'left') {
 			self.flipX(true);
-			self.addOffset = -self.gun.offsetX;
-			self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset;
-			self.pos.y = self.owner.pos.y + self.gun.offsetY;
+			self.addOffset = -self.weapon.offsetX;
+			self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
+			self.pos.y = self.owner.pos.y + self.weapon.offsetY;
 		} else {
-			self.addOffset = 0;
-			self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset;
-			self.pos.y = self.owner.pos.y + self.gun.offsetY;
+			self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
+			self.pos.y = self.owner.pos.y + self.weapon.offsetY;
 		}
+	},
+	
+	attack: function() {
+		var self = this;
+		self.setCurrentAnimation("attack");
+		setTimeout(function() {
+			self.setCurrentAnimation("static");
+		}, 500);
 	},
 	
 	updatePosition: function() {
@@ -190,24 +158,28 @@ game.weapon = me.AnimationSheet.extend({
 		// If the player is moving, add a offset to correct for the 'shadowing'
 		if (me.input.isKeyPressed('left')) {
 			self.flipX(true);
-			self.addOffset = -self.gun.offsetX;
+			self.addOffset = -self.weapon.offsetX;
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.addOffset = 0;
 		} 
 		
-		// update the X, Y pos
-		self.pos.x = self.owner.pos.x + self.gun.offsetX + self.addOffset;
-		self.pos.y = self.owner.pos.y + self.gun.offsetY;
+		if (me.input.isKeyPressed('attack') && !self.owner.attacking) {
+			self.attack();
+			self.owner.attacking = true;
+			
+			setTimeout(function() {
+				self.owner.attacking = false;
+			}, self.weapon.rate);
+		}
+		
+		self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
+		self.pos.y = self.owner.pos.y + self.weapon.offsetY;
 	},
 	
 	update: function() {
-		
-		//update the sprite
-		this.updatePosition();	
-		this.parent();
-	
-		return true;
+		this.updatePosition();
+		this.parent(this);
 	}
 });
 
@@ -239,7 +211,7 @@ game.Explosion = me.ObjectEntity.extend({
 			self.init = false;
 		}
 		
-		this.parent();
+		this.parent(this);
 		
 		return true;
 	}

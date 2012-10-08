@@ -6,6 +6,8 @@ game.CharacterEntity = game.Sprite.extend({
 		self.parent(x, y, settings);
 		
 		self.attacking = false;
+		self.animated = false;
+		self.standing = true;
 		
 		self.weapons = [];
 		self.equipped = [];
@@ -24,7 +26,7 @@ game.CharacterEntity = game.Sprite.extend({
 			this.removeCompositionItem(this.equippedWep.name);
 		}
 		this.equippedWep = wep; 
-		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.gImg,"spritewidth":wep.gWidth,"spriteheight":wep.gHeight});
+		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.gImg,"spritewidth":wep.wWidth,"spriteheight":wep.wHeight});
 		this.setCompositionOrder(wep.name, this.name);
 	},
 	
@@ -49,6 +51,28 @@ game.CharacterEntity = game.Sprite.extend({
 		this.hp += newhealth;
 	},
 	
+	checkAnimation: function(moving) {
+		if(moving) {
+			if(this.animated) {
+				return;
+			} else {
+				this.animated = true;
+				this.standing = false;
+				this.setCurrentAnimation("walk");
+			}
+		} else {
+			if(self.standing) {
+				return;
+			} else {
+				console.log('stand');
+				this.standing = true;
+				this.animated = false;
+				this.setCurrentAnimation("stand");
+			}
+		}
+			
+	},
+	
 	getMovements: function() {
 		// add default movement for NPCs/Enemies
 	},
@@ -60,12 +84,8 @@ game.CharacterEntity = game.Sprite.extend({
 			this.updateMovement();
 		}
 		
-		if(this.vel.x != 0 || this.vel.y != 0) {
-	    	this.parent(this);
-			return true;
-		}
-		
-		return false;
+	    this.parent(this);
+		return true;
 		
 	}
 });

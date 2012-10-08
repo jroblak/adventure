@@ -8,10 +8,12 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		
 		self.hp = 10;
 		
+		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
-		self.setCurrentAnimation("walk");
+		self.setCurrentAnimation("stand");
 		
 		self.updateColRect(4, 26, -1, 0);
+		self.equipWep(game.weapons.sword);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
@@ -24,12 +26,15 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.flipX(true);
 			self.facing = 'left';
 			self.vel.x -= self.accel.x * me.timer.tick;
+			self.checkAnimation(true);
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.facing = 'right';
 			self.vel.x += self.accel.x * me.timer.tick;
+			self.checkAnimation(true);
 		} else {
 			self.vel.x = 0;
+			self.checkAnimation(false);
 		}
 		
 		if (me.input.isKeyPressed('jump')) {
@@ -37,16 +42,6 @@ game.PlayerEntity = game.CharacterEntity.extend({
 				self.vel.y = -self.maxVel.y * me.timer.tick;
 				self.jumping = true;
 			}
-		}
-
-		if (me.input.isKeyPressed('attack') && !self.attacking) {
-			
-			// self.equippedWep.attack();
-			self.attacking = true;
-			
-			setTimeout(function() {
-				self.attacking = false;
-			}, self.equippedWep.firerate);
 		}
 		
 		if(me.input.isKeyPressed('switch')) {
@@ -64,7 +59,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		} 
 	
-		var res = me.game.collide(self);
+		//var res = me.game.collide(self);
 		
 		/*if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
