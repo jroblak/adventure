@@ -17,6 +17,9 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		
 		self.storySize = 14;
 		self.fade = 10;
+		self.storyPos = 0;
+		self.storyUpdate = true;
+		self.storyResetter = true;
 		self.animTimeout = false;
 		self.storyX = this.pos.x - me.game.viewport.pos.x;
 		self.storyY = this.pos.y - me.game.viewport.pos.y;
@@ -29,6 +32,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		var self = this;
 		self.storyX = this.pos.x - me.game.viewport.pos.x + self.fade;
 		self.storyY = this.pos.y - me.game.viewport.pos.y - self.fade;
+		
 		if(!self.animTimeout) {
 			self.storySize -= .05;
 			self.fade += .5;
@@ -37,7 +41,29 @@ game.PlayerEntity = game.CharacterEntity.extend({
 				self.animTimeout = false;
 			}, 5);
 		}
-		return game.story.start;
+		
+		if(self.storyResetter) {
+			self.storyResetter = false;
+			setTimeout(function () {
+				self.storyUpdate = false;
+				self.resetStory();
+				self.storyPos++;
+			}, 5000);
+		}
+		
+		return game.story[self.storyPos];
+	},
+	
+	resetStory: function() {
+		this.storyResetter = true;
+		this.fade = 10;
+		this.storySize = 14;
+		this.storyX = this.pos.x - me.game.viewport.pos.x;
+		this.storyY = this.pos.y - me.game.viewport.pos.y;
+	},
+	
+	triggerStory: function() {
+		this.storyUpdate = true;
 	},
 	
 	// Update function to move/handle player keystrokes
@@ -66,7 +92,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
-		/*
+		
 		if(me.input.isKeyPressed('switch')) {
 			if(!self.weapons[++self.currentWep]) {
 				self.currentWep = 0;
@@ -84,6 +110,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	
 		var res = me.game.collide(self);
 		
+		/*
 		if(res) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				self.removeHP(res.obj.dmg);
@@ -95,7 +122,9 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	
 	draw: function(context) {
 		this.parent(context);
-		this.storyTeller.set('century gothic', this.storySize, 'black')
-		this.storyTeller.draw(context, this.checkStory(), this.storyX, this.storyY); 
+		if(this.storyUpdate) {
+			this.storyTeller.set('century gothic', this.storySize, 'black')
+			this.storyTeller.draw(context, this.checkStory(), this.storyX, this.storyY); 
+		}
 	}
 });

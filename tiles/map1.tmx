@@ -91,6 +91,7 @@
     <property name="to" value="map2"/>
    </properties>
   </object>
+  <object name="storychange" x="2624" y="33" width="40" height="379"/>
  </objectgroup>
  <objectgroup name="enemies" width="100" height="15">
   <object name="enemy" x="875" y="417" width="112" height="26"/>

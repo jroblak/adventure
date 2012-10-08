@@ -1,3 +1,5 @@
+game.story = ["where am i..??", "test 123"];
+
 // extend LevelEntity so that only our player triggers level changes, not any other objects
 game.LevelChangeEntity = me.LevelEntity.extend({
 	init: function(x, y, settings) {
@@ -7,6 +9,18 @@ game.LevelChangeEntity = me.LevelEntity.extend({
 	onCollision: function(res, obj) {
 		if(obj.name === 'player') {
 			this.goTo(this.gotolevel);
+		}
+	}
+});
+
+game.StoryChangeEntity = me.LevelEntity.extend({
+	init: function(x, y, settings) {
+		this.parent(x, y, settings);
+	},
+	
+	onCollision: function(res, obj) {
+		if(obj.name === 'player') {
+			obj.triggerStory();
 		}
 	}
 });
@@ -38,8 +52,3 @@ game.ScoreObject = me.HUD_Item.extend({
 		this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);
 	}	
 });
-
-game.story = {
-	start: "where am i..??",
-	next: "test 123"
-};
