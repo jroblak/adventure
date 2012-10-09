@@ -43,7 +43,7 @@ game.weapon = me.ObjectEntity.extend({
 		self.parent(x, y, {image: self.weapon.image, spritewidth: sw, spriteheight: sh});
 		
 		self.collidable = true;
-		
+
 		self.addOffet = 0;
 		self.addAnimation("static", [0]);
 		self.setCurrentAnimation("static");
@@ -59,12 +59,9 @@ game.weapon = me.ObjectEntity.extend({
 		if(self.owner.facing == 'left') {
 			self.flipX(true);
 			self.addOffset = self.weapon.addOffet;
-			self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
-			self.pos.y = self.owner.pos.y + self.weapon.offsetY;
-		} else {
-			self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
-			self.pos.y = self.owner.pos.y + self.weapon.offsetY;
 		}
+		
+		this.updatePosition();
 	},
 	
 	attack: function() {
@@ -118,7 +115,6 @@ game.weapon = me.ObjectEntity.extend({
 	
 	update: function() {
 		this.updatePosition();
-		
 		this.parent(this);
 		
 		return true;
