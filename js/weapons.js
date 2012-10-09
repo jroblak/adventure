@@ -69,7 +69,11 @@ game.weapon = me.ObjectEntity.extend({
 	
 	attack: function() {
 		var self = this;
-		self.updateColRect(self.weapon.attackRect[0], self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
+		if(self.owner.facing == 'right') {
+			self.updateColRect(self.weapon.attackRect[0], self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
+		} else {
+			self.updateColRect(0, self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
+		}
 		self.setCurrentAnimation("attack");
 		
 		setTimeout(function() {
