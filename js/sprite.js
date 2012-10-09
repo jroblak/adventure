@@ -79,7 +79,6 @@ game.Sprite = me.ObjectEntity.extend({
 
         var image = (typeof(item.image) === "string" ? me.loader.getImage(item.image) : item.image);
         // creates a new object
-		console.log(self.pos.x, self.pos.y);
         self.children[item.name] = new (getClass(item.class))(
             self.pos.x,
             self.pos.y,
