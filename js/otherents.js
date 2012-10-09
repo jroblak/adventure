@@ -43,6 +43,34 @@ game.CoinEntity = me.CollectableEntity.extend({
 	}
 });
 
+game.PickupEntity = me.CollectableEntity.extend({
+	
+	init: function(x, y, settings) {
+		this.parent(x, y, settings);
+		this.item = settings.item;
+		this.itemType = settings.itemType;
+		this.animationpause = true;
+	},
+	
+	onCollision: function(res, obj) {
+		if(obj.name === 'player') {
+			if(this.itemType === 'weapon') {
+				obj.weapons.push(this.item);
+				if(obj.currentWep != null) {
+					obj.currentWep = obj.currentWep++;
+				} else {
+					obj.currentWep = 0;
+				}
+				obj.equipWep(this.item);
+			} else {
+				obj.equipGear(this.item);
+			}
+			this.collidable = false;
+			me.game.remove(this);
+		}
+	}
+});
+
 // Score object for the HUD. Just text that gets updated
 game.ScoreObject = me.HUD_Item.extend({
 	init:function(x, y) {

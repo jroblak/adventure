@@ -1,11 +1,11 @@
 game.weapons = {
 	sword: {
 		name: 'sword',
+		image: "sword",
 		animation: [1, 2, 3, 4],
 		rate: 500,
 		damage: 1,
 		speed: null,
-		image: "sword",
 		projectile: null,
 		pWidth: null,
 		pHeight: null,
@@ -17,11 +17,11 @@ game.weapons = {
 	},
 	whip: {
 		name: 'whip',
+		image: "wipwhip",
 		animation: [1, 2, 3, 4],
 		rate: 500,
 		damage: 1,
 		speed: null,
-		image: "wipwhip",
 		projectile: null,
 		pWidth: null,
 		pHeight: null,

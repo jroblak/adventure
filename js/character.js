@@ -21,10 +21,11 @@ game.CharacterEntity = game.Sprite.extend({
 		self.facing = 'right';
 	},
 	
-	equipWep: function(wep) {
+	equipWep: function(wepstring) {
 		if(this.equippedWep) {
 			this.removeCompositionItem(this.equippedWep.name);
 		}
+		var wep = game.weapons[wepstring];
 		this.equippedWep = wep; 
 		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.image, "spritewidth":wep.wWidth,"spriteheight":wep.wHeight});
 		this.setCompositionOrder(this.name, wep.name);

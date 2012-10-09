@@ -1,19 +1,43 @@
+game.persistant = {
+	player: {
+		weapons: [],
+		gear: []
+	},
+	other: {
+	},
+};
+
 game.PlayerEntity = game.CharacterEntity.extend({
 	
 	init: function(x, y, settings) {
 		var self = this;
 		self.parent(x, y, settings);
 		
-		self.setVelocity(3, 10);
+		self.setVelocity(13, 15);
 		
 		self.hp = 10;
+
+		self.weapons = game.persistant.player.weapons;
+		if(self.weapons.length > 0) {
+			self.currentWep = 0;
+			self.equipWep(self.weapons[self.currentWep]);
+		} else {
+			self.currentWep = null;
+		}
+
+		self.gear = game.persistant.player.gear;
+		if(self.gear.length > 0) {
+			self.currentGear = 0;
+			self.equipGear(self.gear[self.currentGear]);
+		} else {
+			self.currentGear = null;
+		}
 		
 		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
 		self.setCurrentAnimation("stand");
-;
+
 		self.updateColRect(4, 26, -1, 0);
-		self.equipWep(game.weapons.whip);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
