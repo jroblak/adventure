@@ -12,7 +12,8 @@ game.weapons = {
 		wWidth: 12,
 		wHeight: 12,
 		offsetX: 23,
-		offsetY: 15
+		offsetY: 15,
+		attackRect: [27, 23, 0, 32]
 	},
 	whip: {
 		name: 'whip',
@@ -29,8 +30,7 @@ game.weapons = {
 		offsetX: 5,
 		offsetY: -4,
 		addOffset: -30,
-		colRect: [7, 15, 15, 10],
-		attackRect: [4, 46, 0, 32]
+		attackRect: [27, 23, 0, 32]
 	}
 };
 
@@ -48,7 +48,7 @@ game.weapon = me.ObjectEntity.extend({
 		self.addAnimation("static", [0]);
 		self.setCurrentAnimation("static");
 		
-		//self.updateColRect(self.weapon.colRect[0], self.weapon.colRect[1], self.weapon.colRect[2], self.weapon.colRect[3]);
+		self.updateColRect(0, 0, 0, 0);
 		
 		if(self.weapon.animation.length > 1) {
 			self.addAnimation("attack", self.weapon.animation);
@@ -69,11 +69,11 @@ game.weapon = me.ObjectEntity.extend({
 	
 	attack: function() {
 		var self = this;
-		//self.updateColRect(self.weapon.attackRect[0], self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
+		self.updateColRect(self.weapon.attackRect[0], self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
 		self.setCurrentAnimation("attack");
 		
 		setTimeout(function() {
-			//self.updateColRect(self.weapon.colRect[0], self.weapon.colRect[1], self.weapon.colRect[2], self.weapon.colRect[3]);
+			self.updateColRect(0, 0, 0, 0);
 			self.setCurrentAnimation("static");
 		}, 500);
 		
@@ -102,7 +102,6 @@ game.weapon = me.ObjectEntity.extend({
 		var res = me.game.collide(self);
 		
 		if(res) {
-			console.log(res);
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				res.obj.removeHP(self.weapon.damage);
 			} 

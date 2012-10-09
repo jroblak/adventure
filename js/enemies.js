@@ -2,18 +2,13 @@ game.EnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
 		settings.spritewidth = 32;
+		this.parent(x, y, settings);
 		
 		this.hp = 1;
+		
+		this.dmg = 1;
 		this.aggroed = false;
 		this.firstCheck = true;
-		this.dmg = 1;
-		
-		this.parent(x, y, settings);
-
-		this.startX = x;
-		this.endX = x + settings.width - settings.spritewidth;
-		this.pos.x = x + settings.width - settings.spritewidth;
-		this.walkLeft = true;
 		
 		this.setVelocity(2, 6);
 		
@@ -39,23 +34,12 @@ game.EnemyEntity = game.CharacterEntity.extend({
 		}
 		return false;
 	},
-	
 
 	getMovements: function() {
 		
 		this.aggroed = this.checkLOS();
 		
 		if(this.aggroed) {
-			//console.log("attack player!");
-		} else {
-			if(this.walkLeft && this.pos.x <= this.startX) {
-				this.walkLeft = false;
-			} else if(!this.walkLeft && this.pos.x >= this.endX) {
-				this.walkLeft = true;
-			}
-			
-			this.flipX(this.walkLeft);
-			this.vel.x += (this.walkLeft) ? -this.accel.x * me.timer.tick : this.accel.x * me.timer.tick;
-		}
+		} 
 	}
 });

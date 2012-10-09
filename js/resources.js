@@ -9,7 +9,8 @@ game.resources = {
 		"coin",
 		"map1tiles",
 		"parallaxbgmt",
-		"staticbgmt"
+		"staticbgmt",
+		"explode"
 	],
 	
 	map: [

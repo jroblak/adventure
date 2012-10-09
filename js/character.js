@@ -42,7 +42,6 @@ game.CharacterEntity = game.Sprite.extend({
 	removeHP: function(dmg) {
 		this.hp -= dmg;
 		this.flicker(45);
-		console.log('kill');
 		if(this.hp <= 0) {
 			me.game.remove(this);
 		}

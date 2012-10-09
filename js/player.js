@@ -11,59 +11,17 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.addAnimation("stand", [0]);
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
 		self.setCurrentAnimation("stand");
-		
+;
 		self.updateColRect(4, 26, -1, 0);
 		self.equipWep(game.weapons.whip);
-		
-		self.storySize = 14;
-		self.fade = 10;
-		self.storyPos = 0;
-		self.storyUpdate = true;
-		self.storyResetter = true;
-		self.animTimeout = false;
-		self.storyX = this.pos.x - me.game.viewport.pos.x;
-		self.storyY = this.pos.y - me.game.viewport.pos.y;
-		self.storyTeller = new me.Font('century gothic', 14, 'black');
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
 	
-	checkStory: function() {
-		var self = this;
-		self.storyX = this.pos.x - me.game.viewport.pos.x + self.fade;
-		self.storyY = this.pos.y - me.game.viewport.pos.y - self.fade;
-		
-		if(!self.animTimeout) {
-			self.storySize -= .05;
-			self.fade += 1;
-			self.animTimeout = true;
-			setTimeout(function () {
-				self.animTimeout = false;
-			}, 100);
-		}
-		
-		if(self.storyResetter) {
-			self.storyResetter = false;
-			setTimeout(function () {
-				self.storyUpdate = false;
-				self.resetStory();
-				self.storyPos++;
-			}, 5000);
-		}
-		
-		return game.story[self.storyPos];
-	},
-	
-	resetStory: function() {
-		this.storyResetter = true;
-		this.fade = 10;
-		this.storySize = 14;
-		this.storyX = this.pos.x - me.game.viewport.pos.x;
-		this.storyY = this.pos.y - me.game.viewport.pos.y;
-	},
-	
-	triggerStory: function() {
-		this.storyUpdate = true;
+	triggerStory: function(story) {
+		var storyUpdate = new game.StoryEntity(this.pos.x, this.pos.y, story);
+		me.game.add(storyUpdate, 2);
+		me.game.sort();
 	},
 	
 	// Update function to move/handle player keystrokes
@@ -117,13 +75,5 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
-	},
-	
-	draw: function(context) {
-		this.parent(context);
-		if(this.storyUpdate) {
-			this.storyTeller.set('century gothic', this.storySize, 'black');
-			this.storyTeller.draw(context, this.checkStory(), this.storyX, this.storyY); 
-		}
 	}
 });
