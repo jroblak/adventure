@@ -82,10 +82,13 @@ game.CharacterEntity = game.Sprite.extend({
 		if(this.visible) {
 			this.getMovements();
 			this.updateMovement();
+			this.parent(this);
 		}
 		
-	    this.parent(this);
-		return true;
+		if(this.vel.x !=0 || this.vel.y != 0 || this.attacking) {
+			return true;
+		}
+		return false;
 		
 	}
 });

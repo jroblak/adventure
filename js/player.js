@@ -13,7 +13,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		var self = this;
 		self.parent(x, y, settings);
 		
-		self.setVelocity(13, 15);
+		self.setVelocity(3, 13);
 		
 		self.hp = 10;
 

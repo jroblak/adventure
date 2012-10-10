@@ -43,6 +43,7 @@ game.weapon = me.ObjectEntity.extend({
 		self.parent(x, y, {image: self.weapon.image, spritewidth: sw, spriteheight: sh});
 		
 		self.collidable = true;
+		self.needsUpdate = false;
 
 		self.addOffet = 0;
 		self.addAnimation("static", [0]);
@@ -59,6 +60,8 @@ game.weapon = me.ObjectEntity.extend({
 		if(self.owner.facing == 'left') {
 			self.flipX(true);
 			self.addOffset = self.weapon.addOffet;
+		} else {
+			self.addOffset = 0;
 		}
 		
 		this.updatePosition();
@@ -83,12 +86,16 @@ game.weapon = me.ObjectEntity.extend({
 	updatePosition: function() {
 		var self = this;
 		
+		self.needsUpdate = self.owner.attacking;
+		
 		if (me.input.isKeyPressed('left')) {
 			self.flipX(true);
 			self.addOffset = self.weapon.addOffset;
+			self.needsUpdate = true;
 		} else if (me.input.isKeyPressed('right')) {
 			self.flipX(false);
 			self.addOffset = 0;
+			self.needsUpdate = true;
 		} 
 		
 		if (me.input.isKeyPressed('attack') && !self.owner.attacking) {
@@ -110,14 +117,13 @@ game.weapon = me.ObjectEntity.extend({
 		
 		self.pos.x = self.owner.pos.x + self.weapon.offsetX + self.addOffset;
 		self.pos.y = self.owner.pos.y + self.weapon.offsetY;
-		
 	},
 	
 	update: function() {
 		this.updatePosition();
 		this.parent(this);
 		
-		return true;
+		return this.needsUpdate;
 	}
 });
 
