@@ -19,7 +19,7 @@ game.weapons = {
 		name: 'whip',
 		image: "wipwhip",
 		animation: [1, 2, 3, 4],
-		rate: 500,
+		rate: 1000,
 		damage: 1,
 		speed: null,
 		projectile: null,

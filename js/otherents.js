@@ -63,6 +63,7 @@ game.PickupEntity = me.CollectableEntity.extend({
 				}
 				obj.equipWep(this.item);
 			} else {
+				obj.gear.push(this.item);
 				obj.equipGear(this.item);
 			}
 			this.collidable = false;

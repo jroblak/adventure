@@ -31,10 +31,11 @@ game.CharacterEntity = game.Sprite.extend({
 		this.setCompositionOrder(this.name, wep.name);
 	},
 	
-	equipGear: function(gear) {
+	equipGear: function(gearstring) {
 		if(this.equippedGear) {
 			this.removeCompositionItem(this.equippedGear.name);
 		}
+		var gear = game.equipable[gearstring];
 		this.equippedGear = gear;
 		this.addCompositionItem({"name":gear.name,"class":"game.gear","image":gear.image,"spritewidth":gear.width,"spriteheight":gear.height});
 		this.setCompositionOrder(this.name, gear.name);
