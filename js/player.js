@@ -16,7 +16,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.setVelocity(3, 13);
 		
 		self.hp = 10;
-		self.accel.y = 1;
+		self.accel.y = 1.2;
 
 		self.weapons = game.persistant.player.weapons;
 		if(self.weapons.length > 0) {
