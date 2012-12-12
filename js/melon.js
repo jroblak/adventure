@@ -3516,10 +3516,10 @@ var me = me || {};
 				 * @param {int} h deadzone height
 				 */
 				setDeadzone : function(w, h) {
-					this.deadzone = new me.Vector2d(~~((this.width - w) / 2),
+					this.deadzone = new me.Vector2d(~~((w) / 2),
 							~~((this.height - h) / 2 - h * 0.25));
 					// cache some value
-					this._deadwidth = this.width - this.deadzone.x;
+					this._deadwidth = this.deadzone.x;
 					this._deadheight = this.height - this.deadzone.y;
 
 					// force a camera update

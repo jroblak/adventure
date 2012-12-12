@@ -10,7 +10,7 @@ game.persistant = {
 game.PlayerEntity = game.CharacterEntity.extend({
 	
 	init: function(x, y, settings) {
-		var self = this;
+		var self = this; 
 		self.parent(x, y, settings);
 		
 		self.setVelocity(3, 13);
@@ -38,7 +38,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.addAnimation("walk", [0, 1, 2, 3, 4]);
 		self.setCurrentAnimation("stand");
 
-		self.updateColRect(4, 26, -1, 0);
+		//self.updateColRect(4, 26, -1, 0);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
