@@ -35,7 +35,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		}
 		
 		self.addAnimation("stand", [0]);
-		self.addAnimation("walk", [0, 1, 2, 3, 4]);
+		self.addAnimation("walk", [0, 1, 2, 3]);
 		self.setCurrentAnimation("stand");
 
 		//self.updateColRect(4, 26, -1, 0);
