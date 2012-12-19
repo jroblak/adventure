@@ -66,8 +66,6 @@
   <object name="player" x="93" y="361" width="34" height="39">
    <properties>
     <property name="image" value="char"/>
-    <property name="spriteheight" value="64"/>
-    <property name="spritewidth" value="64"/>
    </properties>
   </object>
  </objectgroup>

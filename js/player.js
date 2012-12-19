@@ -11,11 +11,15 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	
 	init: function(x, y, settings) {
 		var self = this; 
+		
+		settings.spritewidth = 64;
+		settings.spriteheight = 64;
+		
 		self.parent(x, y, settings);
 		
 		self.setVelocity(3, 13);
 		
-		self.hp = 10;
+		self.hp = 3;
 		self.accel.y = 1.2;
 
 		self.weapons = game.persistant.player.weapons;
@@ -38,7 +42,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.addAnimation("walk", [0, 1, 2, 3]);
 		self.setCurrentAnimation("stand");
 
-		//self.updateColRect(4, 26, -1, 0);
+		self.updateColRect(16, 36, 6, 58);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
@@ -50,7 +54,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	},
 	
 	// Update function to move/handle player keystrokes
-	getMovements: function() {
+	getMovements: function(hit) {
 		var self = this;
 		
 		if (me.input.isKeyPressed('left')) {
@@ -98,6 +102,10 @@ game.PlayerEntity = game.CharacterEntity.extend({
 				//self.removeHP(res.obj.dmg);
 				self.flicker(45);
 			}
+		}
+
+		if(hit.xprop.prop === 'hurt' || hit.yprop.prop === 'hurt') {
+			self.removeHP(self.hp);
 		}
 		
 	}

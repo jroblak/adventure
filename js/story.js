@@ -1,3 +1,5 @@
+// Change this to classic old school box at the top-style dialogs, etc
+
 game.StoryEntity = me.ObjectEntity.extend({
 	init: function(x, y, story) {
 		var self = this;

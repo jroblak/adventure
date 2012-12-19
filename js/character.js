@@ -45,6 +45,7 @@ game.CharacterEntity = game.Sprite.extend({
 		this.hp -= dmg;
 		this.flicker(45);
 		if(this.hp <= 0) {
+			// Death animations here
 			me.game.remove(this);
 		}
 	},
@@ -74,15 +75,15 @@ game.CharacterEntity = game.Sprite.extend({
 			
 	},
 	
-	getMovements: function() {
+	getMovements: function(hit) {
 		// add default movement for NPCs/Enemies
 	},
 
 	update: function() {
 		
 		if(this.visible) {
-			this.getMovements();
-			this.updateMovement();
+			var hit = this.updateMovement();
+			this.getMovements(hit);
 			this.parent(this);
 		}
 		

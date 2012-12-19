@@ -45,11 +45,9 @@
   </data>
  </layer>
  <objectgroup name="player" width="20" height="100">
-  <object name="player" x="53" y="325" width="48" height="38">
+  <object name="player" x="67" y="307" width="48" height="38">
    <properties>
     <property name="image" value="char"/>
-    <property name="spriteheight" value="32"/>
-    <property name="spritewidth" value="32"/>
    </properties>
   </object>
  </objectgroup>
