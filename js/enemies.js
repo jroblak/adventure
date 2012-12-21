@@ -9,6 +9,10 @@ game.EnemyEntity = game.CharacterEntity.extend({
 		this.dmg = 1;
 		this.aggroed = false;
 		this.firstCheck = true;
+		this.walkLeft = false;
+		
+		this.startX = x;
+		this.endX = x + 200; // remove magic number later
 		
 		this.setVelocity(2, 6);
 		
@@ -21,25 +25,42 @@ game.EnemyEntity = game.CharacterEntity.extend({
 			this.firstCheck = false;
 		}
 
-		if(this.walkLeft) {
+		if(!this.walkLeft) {
 			if(((this.pos.x - this.player.pos.x <= 100) && (this.pos.x - this.player.pos.x >= 0)) &&
 				(this.pos.y - this.player.pos.y <= 150) && (this.pos.y - this.player.pos.y >= 0)) {
+					this.vel.x += -this.accel.x * me.timer.tick;
 					return true;
 			}
 		} else {
 			if (((this.pos.x - this.player.pos.x >= -100) && (this.pos.x - this.player.pos.x <= 0)) &&
 				(this.pos.y - this.player.pos.y <= 150) && (this.pos.y - this.player.pos.y >= 0)) {
+					this.vel.x += this.accel.x * me.timer.tick;
 					return true;
 			}
 		}
 		return false;
 	},
+	
+	
+	patrol: function() {
 
+		if(this.walkLeft && this.pos.x <= this.startX) {
+			this.walkLeft = false;
+		} else if (!this.walkLeft && this.pos.x >= this.endX) {
+			this.walkLeft = true;
+		}
+		
+		this.flipX(this.walkLeft);
+		this.vel.x += (this.walkLeft) ? -this.accel.x * me.timer.tick : this.accel.x * me.timer.tick;
+		
+	},
+	
 	getMovements: function() {
 		
+		this.vel.x = 0; //change velocity every update; maybe dumb
 		this.aggroed = this.checkLOS();
-		
-		if(this.aggroed) {
+		if(!this.aggroed) {
+			this.patrol();
 		} 
 	}
 });
