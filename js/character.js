@@ -56,7 +56,7 @@ game.CharacterEntity = game.Sprite.extend({
 	
 	checkAnimation: function(moving) {
 		if(moving) {
-			if(this.animated) {
+			if(this.animated && !this.attacking) {
 				return;
 			} else {
 				this.animated = true;
@@ -66,15 +66,12 @@ game.CharacterEntity = game.Sprite.extend({
 		} else {
 			if(this.standing) {
 				return;
-			} else if(this.attacking) {
-				this.setCurrentAnimation("attack");
 			} else {
 				this.standing = true;
 				this.animated = false;
 				this.setCurrentAnimation("stand");
 			}
-		}
-			
+		}		
 	},
 	
 	getMovements: function(hit) {
@@ -92,6 +89,7 @@ game.CharacterEntity = game.Sprite.extend({
 		if(this.vel.x !=0 || this.vel.y != 0 || this.attacking) {
 			return true;
 		}
+		
 		return false;
 		
 	}

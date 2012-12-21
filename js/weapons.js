@@ -101,11 +101,9 @@ game.weapon = me.ObjectEntity.extend({
 		if (me.input.isKeyPressed('attack') && !self.owner.attacking) {
 			self.attack();
 			self.owner.attacking = true;
-			self.owner.setCurrentAnimation('attack');
 			
 			setTimeout(function() {
 				self.owner.attacking = false;
-				self.owner.setCurrentAnimation('stand');
 			}, self.weapon.rate);
 		}
 		

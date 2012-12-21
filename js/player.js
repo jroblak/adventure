@@ -20,6 +20,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.setVelocity(3, 13);
 		
 		self.hp = 3;
+		self.hurt = false;
 		self.accel.y = 1.2;
 
 		self.weapons = game.persistant.player.weapons;
@@ -80,7 +81,6 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
-		
 		if(me.input.isKeyPressed('switch')) {
 			if(!self.weapons[++self.currentWep]) {
 				self.currentWep = 0;
@@ -99,9 +99,13 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		var res = me.game.collide(self);
 		
 		if(res) {
-			if(res.obj.type == me.game.ENEMY_OBJECT) {
-				//self.removeHP(res.obj.dmg);
+			if(res.obj.type == me.game.ENEMY_OBJECT && !self.hurt) {
+				self.removeHP(res.obj.dmg);
+				self.hurt = true;
 				self.flicker(45);
+				setTimeout(function(){
+					self.hurt = false;
+				}, 750);
 			}
 		}
 
