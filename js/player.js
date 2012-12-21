@@ -40,6 +40,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		
 		self.addAnimation("stand", [0, 1]);
 		self.addAnimation("walk", [1, 2, 3, 4]);
+		self.addAnimation("attack", [2])
 		self.setCurrentAnimation("stand");
 
 		self.updateColRect(9, 12, -1, 0);

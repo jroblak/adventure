@@ -18,8 +18,8 @@ game.weapons = {
 	whip: {
 		name: 'whip',
 		image: "wipwhip",
-		animation: [1, 2, 3, 4],
-		rate: 1000,
+		animation: [2, 3, 4, 5],
+		rate: 500,
 		damage: 1,
 		speed: null,
 		projectile: null,
@@ -46,7 +46,7 @@ game.weapon = me.ObjectEntity.extend({
 		self.needsUpdate = false;
 
 		self.addOffet = 0;
-		self.addAnimation("static", [0]);
+		self.addAnimation("static", [0, 1]);
 		self.setCurrentAnimation("static");
 		
 		self.updateColRect(0, 0, 0, 0);
@@ -74,12 +74,11 @@ game.weapon = me.ObjectEntity.extend({
 		} else {
 			self.updateColRect(0, self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
 		}
-		self.setCurrentAnimation("attack");
+		self.setCurrentAnimation("attack", "static");
 		self.setAnimationFrame();
 		
 		setTimeout(function() {
 			self.updateColRect(0, 0, 0, 0);
-			self.setCurrentAnimation("static");
 		}, 450);
 		
 	},
@@ -102,9 +101,11 @@ game.weapon = me.ObjectEntity.extend({
 		if (me.input.isKeyPressed('attack') && !self.owner.attacking) {
 			self.attack();
 			self.owner.attacking = true;
+			self.owner.setCurrentAnimation('attack');
 			
 			setTimeout(function() {
 				self.owner.attacking = false;
+				self.owner.setCurrentAnimation('stand');
 			}, self.weapon.rate);
 		}
 		

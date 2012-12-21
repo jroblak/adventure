@@ -64,8 +64,10 @@ game.CharacterEntity = game.Sprite.extend({
 				this.setCurrentAnimation("walk");
 			}
 		} else {
-			if(self.standing) {
+			if(this.standing) {
 				return;
+			} else if(this.attacking) {
+				this.setCurrentAnimation("attack");
 			} else {
 				this.standing = true;
 				this.animated = false;
