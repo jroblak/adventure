@@ -63,8 +63,8 @@ var game = {
 			me.entityPool.add("levelchange", game.LevelChangeEntity);
 			me.entityPool.add("storychange", game.StoryChangeEntity);
 			me.entityPool.add("itementity", game.PickupEntity);
-			
-			// me.debug.renderHitBox = true
+
+			//me.debug.renderHitBox = true
 			
 			me.input.bindKey(me.input.KEY.LEFT, "left");
 			me.input.bindKey(me.input.KEY.RIGHT, "right");

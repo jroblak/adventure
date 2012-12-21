@@ -75,11 +75,12 @@ game.weapon = me.ObjectEntity.extend({
 			self.updateColRect(0, self.weapon.attackRect[1], self.weapon.attackRect[2], self.weapon.attackRect[3]);
 		}
 		self.setCurrentAnimation("attack");
+		self.setAnimationFrame();
 		
 		setTimeout(function() {
 			self.updateColRect(0, 0, 0, 0);
 			self.setCurrentAnimation("static");
-		}, 500);
+		}, 450);
 		
 	},
 	

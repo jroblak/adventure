@@ -12,8 +12,8 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	init: function(x, y, settings) {
 		var self = this; 
 		
-		settings.spritewidth = 64;
-		settings.spriteheight = 64;
+		settings.spritewidth = 32;
+		settings.spriteheight = 32;
 		
 		self.parent(x, y, settings);
 		
@@ -38,11 +38,11 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.currentGear = null;
 		}
 		
-		self.addAnimation("stand", [0]);
-		self.addAnimation("walk", [0, 1, 2, 3]);
+		self.addAnimation("stand", [0, 1]);
+		self.addAnimation("walk", [1, 2, 3, 4]);
 		self.setCurrentAnimation("stand");
 
-		self.updateColRect(16, 36, 6, 58);
+		self.updateColRect(9, 12, -1, 0);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
