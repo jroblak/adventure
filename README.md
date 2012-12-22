@@ -1,4 +1,5 @@
-#untitled adventure - On Hold
+#simple adventure game
 -----------------------
-My second attempt at a JavaScript game.  Much better code and performance this time around. 
+- Find the hidden tresure; win!
+- My second attempt at a JavaScript-based game.  Much better code and performance this time around. 
 
