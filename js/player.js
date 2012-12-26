@@ -1,7 +1,9 @@
 game.persistant = {
 	player: {
 		weapons: [],
-		gear: []
+		gear: [],
+		hp: 3,
+		level: 'map1',
 	},
 	other: {
 	},
@@ -17,9 +19,9 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		
 		self.parent(x, y, settings);
 		
-		self.setVelocity(3, 13);
+		self.setVelocity(4, 13);
 		
-		self.hp = 3;
+		self.hp = game.persistant.player.hp;
 		self.hurt = false;
 		self.accel.y = 1.2;
 
