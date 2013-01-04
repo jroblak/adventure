@@ -11,7 +11,8 @@ game.resources = {
 		"parallaxbgmt",
 		"staticbgmt",
 		"explode",
-		"jetpack"
+		"jetpack",
+		"cavebg",
 	],
 	
 	map: [

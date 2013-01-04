@@ -28,7 +28,7 @@ game.CharacterEntity = game.Sprite.extend({
 		var wep = game.weapons[wepstring];
 		this.equippedWep = wep; 
 		this.addCompositionItem({"name":wep.name,"class":"game.weapon","image":wep.image, "spritewidth":wep.wWidth,"spriteheight":wep.wHeight});
-		this.setCompositionOrder(this.name, wep.name);
+		this.setCompositionOrder(wep.name, this.name, true);
 	},
 	
 	equipGear: function(gearstring) {
@@ -38,7 +38,7 @@ game.CharacterEntity = game.Sprite.extend({
 		var gear = game.equipable[gearstring];
 		this.equippedGear = gear;
 		this.addCompositionItem({"name":gear.name,"class":"game.gear","image":gear.image,"spritewidth":gear.width,"spriteheight":gear.height});
-		this.setCompositionOrder(this.name, gear.name);
+		this.setCompositionOrder(gear.name, this.name, false);
 	},
 	
 	removeHP: function(dmg) {
@@ -56,7 +56,7 @@ game.CharacterEntity = game.Sprite.extend({
 	
 	checkAnimation: function(moving) {
 		if(moving) {
-			if(this.animated) {
+			if(this.animated && !this.attacking) {
 				return;
 			} else {
 				this.animated = true;
@@ -64,15 +64,14 @@ game.CharacterEntity = game.Sprite.extend({
 				this.setCurrentAnimation("walk");
 			}
 		} else {
-			if(self.standing) {
+			if(this.standing) {
 				return;
 			} else {
 				this.standing = true;
 				this.animated = false;
 				this.setCurrentAnimation("stand");
 			}
-		}
-			
+		}		
 	},
 	
 	getMovements: function(hit) {
@@ -90,6 +89,7 @@ game.CharacterEntity = game.Sprite.extend({
 		if(this.vel.x !=0 || this.vel.y != 0 || this.attacking) {
 			return true;
 		}
+		
 		return false;
 		
 	}

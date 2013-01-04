@@ -1,7 +1,9 @@
 game.persistant = {
 	player: {
 		weapons: [],
-		gear: []
+		gear: [],
+		hp: 3,
+		level: 'map1',
 	},
 	other: {
 	},
@@ -12,14 +14,15 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	init: function(x, y, settings) {
 		var self = this; 
 		
-		settings.spritewidth = 64;
-		settings.spriteheight = 64;
+		settings.spritewidth = 32;
+		settings.spriteheight = 32;
 		
 		self.parent(x, y, settings);
 		
-		self.setVelocity(3, 13);
+		self.setVelocity(4, 13);
 		
-		self.hp = 3;
+		self.hp = game.persistant.player.hp;
+		self.hurt = false;
 		self.accel.y = 1.2;
 
 		self.weapons = game.persistant.player.weapons;
@@ -38,11 +41,12 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.currentGear = null;
 		}
 		
-		self.addAnimation("stand", [0]);
-		self.addAnimation("walk", [0, 1, 2, 3]);
+		self.addAnimation("stand", [0, 1]);
+		self.addAnimation("walk", [1, 2, 3, 4]);
+		self.addAnimation("attack", [2])
 		self.setCurrentAnimation("stand");
 
-		self.updateColRect(16, 36, 6, 58);
+		self.updateColRect(9, 12, -1, 0);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
 	},
@@ -79,7 +83,6 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
-		
 		if(me.input.isKeyPressed('switch')) {
 			if(!self.weapons[++self.currentWep]) {
 				self.currentWep = 0;
@@ -98,9 +101,13 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		var res = me.game.collide(self);
 		
 		if(res) {
-			if(res.obj.type == me.game.ENEMY_OBJECT) {
-				//self.removeHP(res.obj.dmg);
+			if(res.obj.type == me.game.ENEMY_OBJECT && !self.hurt) {
+				self.removeHP(res.obj.dmg);
+				self.hurt = true;
 				self.flicker(45);
+				setTimeout(function(){
+					self.hurt = false;
+				}, 750);
 			}
 		}
 
