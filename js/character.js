@@ -76,7 +76,7 @@ game.CharacterEntity = game.Sprite.extend({
 	},
 	
 	getMovements: function(hit) {
-		// add default movement for NPCs/Enemies
+		// Default movements (NPCs?)
 	},
 
 	update: function() {

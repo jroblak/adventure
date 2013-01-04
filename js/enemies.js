@@ -9,6 +9,12 @@ game.EnemyEntity = game.CharacterEntity.extend({
 		this.dmg = 1;
 		this.aggroed = false;
 		this.firstCheck = true;
+		this.collidable = true;
+		
+		this.startX = x;
+		this.endX = x + settings.width - settings.spritewidth;
+		this.pos.x = x + settings.width - settings.spritewidth;
+		this.walkLeft = true;
 		
 		this.setVelocity(2, 6);
 		
