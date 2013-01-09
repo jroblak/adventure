@@ -1,7 +1,7 @@
 game.persistant = {
 	player: {
 		weapons: [],
-		gear: [],
+		gear: ['jetpack'],
 		hp: 3,
 		level: 'map1',
 	},

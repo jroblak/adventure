@@ -5,7 +5,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		
 	onResetEvent: function() {
 		// Load the first level on a reset event
-		me.levelDirector.loadLevel('map1');
+		me.levelDirector.loadLevel('map4');
 		
 		// Add the HUD and a score item to the HUD
 		me.game.addHUD(0, 0, 640, 480);

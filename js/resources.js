@@ -13,6 +13,7 @@ game.resources = {
 		"explode",
 		"jetpack",
 		"cavebg",
+		"testpar",
 	],
 	
 	map: [
