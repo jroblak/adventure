@@ -32,6 +32,12 @@
     <property name="type" value="breakable"/>
    </properties>
   </tile>
+  <tile id="6">
+   <properties>
+    <property name="prop" value="hurt"/>
+    <property name="type" value="solid"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="13" name="map1tiles" tilewidth="32" tileheight="32">
   <image source="../img/map1tiles.png" width="320" height="64"/>
