@@ -11,21 +11,6 @@ game.LevelChangeEntity = me.LevelEntity.extend({
 	}
 });
 
-game.StoryChangeEntity = me.LevelEntity.extend({
-	init: function(x, y, settings) {
-		this.parent(x, y, settings);
-		this.story = settings.story;
-		this.enabled = true;
-	},
-	
-	onCollision: function(res, obj) {
-		if(obj.name === 'player' && this.enabled) {
-			obj.triggerStory(this.story);
-			this.enabled = false;
-		}
-	}
-});
-
 // Coin entity -- simple gets collected and adds to the score when it does.
 // TO DO: Fix so guns don't collect/destroy them
 game.CoinEntity = me.CollectableEntity.extend({
@@ -82,3 +67,15 @@ game.ScoreObject = me.HUD_Item.extend({
 		this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);
 	}	
 });
+
+/*
+game.HealthObject = me.HUD_Item.extend({
+	init:function(x, y) {
+		this.parent(x, y);
+		this.font = new me.Font('century gothic', 24, 'white');
+	},
+	draw: function(context, x, y){
+		this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);
+	}	
+});
+*/
