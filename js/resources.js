@@ -14,6 +14,7 @@ game.resources = {
 		"jetpack",
 		"cavebg",
 		"testpar",
+		"mainsplash",
 	],
 	
 	map: [

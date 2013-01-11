@@ -1,11 +1,64 @@
 // File that contains the various 'screens' for the game
+game.TitleScreen = me.ScreenObject.extend({
+    // constructor
+    init: function() {
+        this.parent(true);
+
+		this.title = null;
+		
+		this.font = null;
+		this.staticfont = null;
+		
+		this.blinker = "enter to start"
+		this.blinkspeed = 600;
+    },
+ 
+    // reset function
+    onResetEvent: function() {
+		if(this.title === null) {
+			this.title = me.loader.getImage("mainsplash");
+		}
+		
+		this.staticfont = new me.Font('Helvetica Neue', 14, 'black');
+		if(game.persistent.other.deathcounter != 0) {
+			this.font = new me.Font('Helvetica Neue', 14, 'black');
+		}
+		
+		me.input.bindKey(me.input.KEY.ENTER, "enter", true);
+    },
+ 
+    // update function
+    update: function() {
+		if (me.input.isKeyPressed('enter')) {
+			me.state.change(me.state.PLAY);
+		}
+		return true;
+    },
+ 
+    // draw function
+    draw: function(context) {
+		context.drawImage(this.title, 0, 0);
+		
+		if(this.font) {
+			this.font.draw(context, "Deaths: "+game.persistent.other.deathcounter, 560, 460);
+		}
+		this.staticfont.draw(context, "Enter to Start", 20, 460);
+    },
+ 
+    // destroy function
+    onDestroyEvent: function() {
+		me.input.unbindKey(me.input.KEY.ENTER);
+		
+    }
+ 
+});
 
 // PlayerScreen - loads and changes levels, controls HUD and score
 game.PlayScreen = me.ScreenObject.extend({
 		
 	onResetEvent: function() {
 		// Load the first level on a reset event
-		me.levelDirector.loadLevel('map4');
+		me.levelDirector.loadLevel(game.persistent.player.level);
 		
 		// Add the HUD and a score item to the HUD
 		me.game.addHUD(0, 0, 640, 480);

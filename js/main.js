@@ -56,6 +56,7 @@ var game = {
 	// set the key bindings, and changes the state to the new playscreen
 	loaded: function() {
 			me.state.set(me.state.PLAY, new game.PlayScreen());
+			me.state.set(me.state.MENU, new game.TitleScreen())
 			
 			me.entityPool.add("player", game.PlayerEntity);
 			me.entityPool.add("coin", game.CoinEntity);
@@ -73,7 +74,7 @@ var game = {
 			me.input.bindKey(me.input.KEY.C, "switch", true);
 			me.input.bindKey(me.input.KEY.SPACE, "fly");
 			
-			me.state.change(me.state.PLAY);
+			me.state.change(me.state.MENU);
 			
 	}
 

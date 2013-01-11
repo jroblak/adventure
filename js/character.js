@@ -47,6 +47,12 @@ game.CharacterEntity = game.Sprite.extend({
 		if(this.hp <= 0) {
 			// Death animations here
 			me.game.remove(this);
+			if(this.name === 'player') {
+				game.persistent.other.deathcounter += 1;
+				setTimeout(function() {
+					me.state.change(me.state.MENU);
+				}, 500);
+			}
 		}
 	},
 	

@@ -1,11 +1,12 @@
-game.persistant = {
+game.persistent = {
 	player: {
 		weapons: [],
-		gear: ['jetpack'],
+		gear: [],
 		hp: 3,
 		level: 'map1',
 	},
 	other: {
+		deathcounter: 0
 	},
 };
 
@@ -14,6 +15,9 @@ game.PlayerEntity = game.CharacterEntity.extend({
 	init: function(x, y, settings) {
 		var self = this; 
 		
+		if (game.persistent.player.level != me.game.currentLevel.name) {
+			game.persistent.player.level = me.game.currentLevel.name;
+		}
 		settings.spritewidth = 32;
 		settings.spriteheight = 32;
 		
@@ -21,11 +25,11 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		
 		self.setVelocity(4, 13);
 		
-		self.hp = game.persistant.player.hp;
+		self.hp = game.persistent.player.hp;
 		self.hurt = false;
 		self.accel.y = 1.2;
 
-		self.weapons = game.persistant.player.weapons;
+		self.weapons = game.persistent.player.weapons;
 		if(self.weapons.length > 0) {
 			self.currentWep = 0;
 			self.equipWep(self.weapons[self.currentWep]);
@@ -33,7 +37,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.currentWep = null;
 		}
 
-		self.gear = game.persistant.player.gear;
+		self.gear = game.persistent.player.gear;
 		if(self.gear.length > 0) {
 			self.currentGear = 0;
 			self.equipGear(self.gear[self.currentGear]);
@@ -92,7 +96,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
-		if(me.input.isKeyPressed('fly')) {
+		if(me.input.isKeyPressed('fly') && this.equippedGear) {
 			if(this.equippedGear.name === 'jetpack') {
 				self.vel.y -= self.accel.y * me.timer.tick;
 			}
