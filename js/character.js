@@ -46,13 +46,19 @@ game.CharacterEntity = game.Sprite.extend({
 		this.flicker(45);
 		if(this.hp <= 0) {
 			// Death animations here
-			me.game.remove(this);
+			
 			if(this.name === 'player') {
+				var gib = new game.Death()
+				me.game.add(gib, 3);
+				me.game.sort();
 				game.persistent.other.deathcounter += 1;
+				me.game.remove(this);
 				setTimeout(function() {
 					me.state.change(me.state.MENU);
 				}, 500);
+				
 			}
+			me.game.remove(this);
 		}
 	},
 	

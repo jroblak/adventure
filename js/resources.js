@@ -15,6 +15,7 @@ game.resources = {
 		"cavebg",
 		"testpar",
 		"mainsplash",
+		"chargib"
 	],
 	
 	map: [

@@ -127,19 +127,22 @@ game.weapon = me.ObjectEntity.extend({
 	}
 });
 
-game.Explosion = me.ObjectEntity.extend({
-	init: function(x, y, facing) {
+game.Death = me.ObjectEntity.extend({
+	init: function() {
 		var self = this;
-		self.parent(x, y, {image: "explode", spritewidth: 32});
+		console.log('here');
+		this.player = me.game.getEntityByName("player")[0];
+		var x = this.player.pos.x;
+		var y = this.player.pos.y;
+		self.parent(x, y, {image: "chargib", spritewidth: 32});
 		self.init = true;
-		self.facing = facing;
+
 		self.gravity = 0;
 		self.animationspeed = 4;
 		
-		this.pos.y -= 12;
-		if(self.facing === 'right') {
-			this.pos.x -= 25;
-		}
+		this.pos.x = x;
+		this.pos.y = y;
+		
 		
 	},
 
