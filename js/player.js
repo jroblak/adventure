@@ -3,7 +3,7 @@ game.persistent = {
 		weapons: [],
 		gear: [],
 		hp: 3,
-		level: 'map1',
+		level: 'map4',
 	},
 	other: {
 		deathcounter: 0
@@ -48,18 +48,11 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.addAnimation("stand", [0, 1]);
 		self.addAnimation("walk", [1, 2, 3, 4]);
 		self.addAnimation("attack", [2]);
-		self.addAnimation("death", [6,7,8,9,10,11]);
 		self.setCurrentAnimation("stand");
 
 		self.updateColRect(9, 12, -1, 0);
 		
 		me.game.viewport.follow(self.pos, me.game.viewport.AXIS.BOTH);
-	},
-	
-	triggerStory: function(story) {
-		var storyUpdate = new game.StoryEntity(this.pos.x, this.pos.y, story);
-		me.game.add(storyUpdate, 2);
-		me.game.sort();
 	},
 	
 	// Update function to move/handle player keystrokes

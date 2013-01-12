@@ -130,7 +130,6 @@ game.weapon = me.ObjectEntity.extend({
 game.Death = me.ObjectEntity.extend({
 	init: function() {
 		var self = this;
-		console.log('here');
 		this.player = me.game.getEntityByName("player")[0];
 		var x = this.player.pos.x;
 		var y = this.player.pos.y;

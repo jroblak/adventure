@@ -67,7 +67,7 @@ game.EnemyEntity = game.CharacterEntity.extend({
 
 game.FlyingEnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
-		settings.image = 'bad1';
+		settings.image = 'bad2';
 		settings.spritewidth = 32;
 		this.parent(x, y, settings);
 		
@@ -80,7 +80,7 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 		this.startY = y;
 		this.endY = y + 150; // remove magic number later
 		
-		this.setVelocity(0, 4);
+		this.setVelocity(0, 3);
 		
 		this.type = me.game.ENEMY_OBJECT;
 	},
@@ -94,7 +94,6 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 			this.goUp = true;
 		}
 		
-		this.flipX(this.walkLeft);
 		this.vel.y += (this.goUp) ? -this.accel.y * me.timer.tick : this.accel.y * me.timer.tick;
 		
 	},
@@ -108,7 +107,7 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 
 game.FlyingShootingEnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
-		settings.image = 'bad1';
+		settings.image = 'bad2';
 		settings.spritewidth = 32;
 		this.parent(x, y, settings);
 		
@@ -121,8 +120,8 @@ game.FlyingShootingEnemyEntity = game.CharacterEntity.extend({
 		this.startY = y;
 		this.endY = y + 150; // remove magic number later
 		
-		this.setVelocity(0, 4);
-		
+		this.setVelocity(0, 3);
+
 		this.type = me.game.ENEMY_OBJECT;
 	},
 	
@@ -135,7 +134,6 @@ game.FlyingShootingEnemyEntity = game.CharacterEntity.extend({
 			this.goUp = true;
 		}
 		
-		this.flipX(this.walkLeft);
 		this.vel.y += (this.goUp) ? -this.accel.y * me.timer.tick : this.accel.y * me.timer.tick;
 		
 	},

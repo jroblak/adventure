@@ -63,7 +63,6 @@ var game = {
 			me.entityPool.add("enemy", game.EnemyEntity);
 			me.entityPool.add("flyingenemy", game.FlyingEnemyEntity);
 			me.entityPool.add("levelchange", game.LevelChangeEntity);
-			me.entityPool.add("storychange", game.StoryChangeEntity);
 			me.entityPool.add("itementity", game.PickupEntity);
 
 			//me.debug.renderHitBox = true
