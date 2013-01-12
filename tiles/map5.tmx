@@ -85,11 +85,6 @@
     <property name="to" value="map4"/>
    </properties>
   </object>
-  <object name="storychange" x="161" y="294" width="40" height="77">
-   <properties>
-    <property name="story" value="hmm...how do i get up there?"/>
-   </properties>
-  </object>
   <object name="coin" x="375" y="164" width="16" height="18">
    <properties>
     <property name="image" value="coin"/>
