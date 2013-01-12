@@ -29,15 +29,18 @@ game.EnemyEntity = game.CharacterEntity.extend({
 			if(((this.pos.x - this.player.pos.x <= 100) && (this.pos.x - this.player.pos.x >= 0)) &&
 				(this.pos.y - this.player.pos.y <= 150) && (this.pos.y - this.player.pos.y >= 0)) {
 					this.vel.x += -this.accel.x * me.timer.tick;
+					this.walkLeft = true;
 					return true;
 			}
 		} else {
 			if (((this.pos.x - this.player.pos.x >= -100) && (this.pos.x - this.player.pos.x <= 0)) &&
 				(this.pos.y - this.player.pos.y <= 150) && (this.pos.y - this.player.pos.y >= 0)) {
 					this.vel.x += this.accel.x * me.timer.tick;
+					this.walkLeft = false;
 					return true;
 			}
 		}
+		this.flipX(this.walkLeft);
 		return false;
 	},
 	
