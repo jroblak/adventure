@@ -131,6 +131,5 @@
  <objectgroup name="enemies" width="100" height="15">
   <object name="enemy" x="1216" y="414" width="562" height="25"/>
   <object name="enemy" x="2568" y="406" width="420" height="31"/>
-  <object name="flyingenemy" x="1130" y="170" width="37" height="33"/>
  </objectgroup>
 </map>
