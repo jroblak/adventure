@@ -68,14 +68,16 @@ game.ScoreObject = me.HUD_Item.extend({
 	}	
 });
 
-/*
+
 game.HealthObject = me.HUD_Item.extend({
 	init:function(x, y) {
-		this.parent(x, y);
-		this.font = new me.Font('century gothic', 24, 'white');
+		this.parent(x, y, game.persistent.player.hp);
+		this.image = me.loader.getImage("health");
 	},
-	draw: function(context, x, y){
-		this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);
+	draw: function(context){
+		for(var i = 0; i < this.value; i++) {
+			console.log("drawing", this.value);
+			context.drawImage(this.image,this.pos.x+(i*32),this.pos.y);
+		}
 	}	
 });
-*/

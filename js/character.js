@@ -44,8 +44,11 @@ game.CharacterEntity = game.Sprite.extend({
 	removeHP: function(dmg) {
 		this.hp -= dmg;
 		this.flicker(45);
+		
+		if(this.name === 'player') {
+			me.game.HUD.updateItemValue("health", -dmg);
+		}
 		if(this.hp <= 0) {
-			// Death animations here
 			
 			if(this.name === 'player') {
 				var gib = new game.Death()

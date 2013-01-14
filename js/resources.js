@@ -16,7 +16,8 @@ game.resources = {
 		"testpar",
 		"mainsplash",
 		"chargib",
-		"bad2"
+		"bad2",
+		"health"
 	],
 	
 	map: [
