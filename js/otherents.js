@@ -57,10 +57,9 @@ game.PickupEntity = me.CollectableEntity.extend({
 	}
 });
 
-game.EventEntity = me.CollectableEntity.extend({
+game.EventEntity = me.LevelEntity.extend({
 	
 	init: function(x, y, settings) {
-		settings.image = 'jetpack';
 		this.parent(x, y, settings);
 		this.item = settings.item;
 		this.event = settings.event;
