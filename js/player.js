@@ -1,6 +1,6 @@
 game.persistent = {
 	player: {
-		weapons: [],
+		weapons: ["whip"],
 		gear: ['jetpack'],
 		hp: 3,
 		level: 'map5',

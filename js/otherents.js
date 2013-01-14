@@ -68,8 +68,6 @@ game.EventEntity = me.LevelEntity.extend({
 	onCollision: function(res, obj) {
 		if(obj.name === 'player') {
 			if(this.event === 'remove') {
-				var index = obj.gear.indexOf(this.item)
-				obj.gear.splice(index, 1);
 				obj.equippedGear = null;
 				obj.removeCompositionItem(this.item);
 			}
