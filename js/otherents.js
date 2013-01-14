@@ -76,7 +76,6 @@ game.HealthObject = me.HUD_Item.extend({
 	},
 	draw: function(context){
 		for(var i = 0; i < this.value; i++) {
-			console.log("drawing", this.value);
 			context.drawImage(this.image,this.pos.x+(i*32),this.pos.y);
 		}
 	}	

@@ -1,9 +1,9 @@
 game.persistent = {
 	player: {
 		weapons: [],
-		gear: [],
+		gear: ['jetpack'],
 		hp: 3,
-		level: 'map1',
+		level: 'map4',
 	},
 	other: {
 		deathcounter: 0
@@ -28,6 +28,12 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.hp = game.persistent.player.hp;
 		self.hurt = false;
 		self.accel.y = 1.2;
+		
+		if (me.game.currentLevel.name === 'map4') {
+			me.sys.gravity = .75;
+		} else {
+			this.gravity = 1;
+		}
 
 		self.weapons = game.persistent.player.weapons;
 		if(self.weapons.length > 0) {
