@@ -3,7 +3,7 @@ game.persistent = {
 		weapons: [],
 		gear: ['jetpack'],
 		hp: 3,
-		level: 'map4',
+		level: 'map5',
 	},
 	other: {
 		deathcounter: 0

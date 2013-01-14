@@ -94,8 +94,9 @@ game.Sprite = me.ObjectEntity.extend({
 	
 	removeCompositionItem: function(itemname) {
         if(this.children[itemname]) {
+			var index = this.composition.indexOf(this.itemname);
+			this.composition = this.composition.splice(index, 1);
 			me.game.remove(this.children[itemname]);
-			this.composition = this.composition.splice(itemname, 1);
 		}
 
     },

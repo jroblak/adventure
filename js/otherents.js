@@ -57,6 +57,29 @@ game.PickupEntity = me.CollectableEntity.extend({
 	}
 });
 
+game.EventEntity = me.CollectableEntity.extend({
+	
+	init: function(x, y, settings) {
+		settings.image = 'jetpack';
+		this.parent(x, y, settings);
+		this.item = settings.item;
+		this.event = settings.event;
+	},
+	
+	onCollision: function(res, obj) {
+		if(obj.name === 'player') {
+			if(this.event === 'remove') {
+				var index = obj.gear.indexOf(this.item)
+				obj.gear.splice(index, 1);
+				obj.equippedGear = null;
+				obj.removeCompositionItem(this.item);
+			}
+			this.collidable = false;
+			me.game.remove(this);
+		}
+	}
+});
+
 // Score object for the HUD. Just text that gets updated
 game.ScoreObject = me.HUD_Item.extend({
 	init:function(x, y) {
