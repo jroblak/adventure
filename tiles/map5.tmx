@@ -83,7 +83,7 @@
   <object name="flyingenemy" x="390" y="86" width="31" height="246"/>
  </objectgroup>
  <objectgroup name="pickups" width="100" height="15">
-  <object name="evententity" x="2554" y="57" width="77" height="63">
+  <object name="evententity" x="2602" y="59" width="77" height="63">
    <properties>
     <property name="event" value="theend"/>
     <property name="item" value="null"/>

@@ -49,7 +49,7 @@ game.weapon = me.ObjectEntity.extend({
 		self.addAnimation("static", [0, 1]);
 		self.setCurrentAnimation("static");
 		
-		self.updateColRect(0, 0, 0, 0);
+		self.updateColRect(1, 1, 1, 1);
 		
 		if(self.weapon.animation.length > 1) {
 			self.addAnimation("attack", self.weapon.animation);
@@ -78,7 +78,7 @@ game.weapon = me.ObjectEntity.extend({
 		self.setAnimationFrame();
 		
 		setTimeout(function() {
-			self.updateColRect(0, 0, 0, 0);
+			self.updateColRect(1, 1, 1, 1);
 		}, 450);
 		
 	},

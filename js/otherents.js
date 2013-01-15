@@ -121,7 +121,7 @@ game.CreditsEntity = me.ObjectEntity.extend({
 
 		self.credits1 = "      The End";
 		self.credits2 = "By: Justin Oblak";
-		self.credits2 = "You died " + game.persistent.other.deathcounter + " times!";
+		self.credits3 = "You died " + game.persistent.other.deathcounter + " times!";
 
 		self.creditsSize = 24;
 
@@ -142,7 +142,7 @@ game.CreditsEntity = me.ObjectEntity.extend({
 	draw: function(context) {
 		this.credits.draw(context, this.credits1, this.creditsX, this.creditsY);
 		this.credits.draw(context, this.credits2, this.creditsX, this.creditsY + 50);
-		this.credits.draw(context, this.credits2, this.creditsX, this.creditsY + 100);
+		this.credits.draw(context, this.credits3, this.creditsX, this.creditsY + 100);
 		this.credits.set('century gothic', this.creditsSize, 'black');
 	}
 });
