@@ -76,7 +76,7 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 		
 		this.hp = 1;
 		
-		this.dmg = 2;
+		this.dmg = 1;
 
 		this.firstCheck = true;
 		
@@ -85,46 +85,6 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 		
 		this.setVelocity(0, 3);
 		
-		this.type = me.game.ENEMY_OBJECT;
-	},
-	
-	
-	patrol: function() {
-
-		if(this.pos.y <= this.startY) {
-			this.goUp = false;
-		} else if (this.pos.y >= this.endY) {
-			this.goUp = true;
-		}
-		
-		this.vel.y += (this.goUp) ? -this.accel.y * me.timer.tick : this.accel.y * me.timer.tick;
-		
-	},
-	
-	getMovements: function() {
-		
-		this.vel.y = 0; //change velocity every update; maybe dumb
-		this.patrol();
-	}
-});
-
-game.FlyingShootingEnemyEntity = game.CharacterEntity.extend({
-	init:function(x, y, settings) {
-		settings.image = 'bad2';
-		settings.spritewidth = 32;
-		this.parent(x, y, settings);
-		
-		this.hp = 1;
-		
-		this.dmg = 2;
-
-		this.firstCheck = true;
-		
-		this.startY = y;
-		this.endY = y + 150; // remove magic number later
-		
-		this.setVelocity(0, 3);
-
 		this.type = me.game.ENEMY_OBJECT;
 	},
 	

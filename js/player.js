@@ -121,5 +121,9 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.removeHP(self.hp);
 		}
 		
+		if(this.pos.y <= 0 + me.game.viewport.pos.y || this.pos.y >= 480 + me.game.viewport.pos.y) {
+			this.removeHP(this.hp);
+		}
+		
 	}
 });
