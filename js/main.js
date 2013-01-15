@@ -75,6 +75,7 @@ var game = {
 			// me.input.bindKey(me.input.KEY.C, "switch", true);
 			me.input.bindKey(me.input.KEY.SPACE, "fly");
 			
+			// Go to the main menu!
 			me.state.change(me.state.MENU);
 			
 	}

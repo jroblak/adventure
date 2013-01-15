@@ -93,9 +93,6 @@ game.CustomLoadScreen = me.ScreenObject.extend({
 			this.loadPercent = 0;
 
 		},
-
-		// call when the loader is resetted
-
 		// destroy object at end of loading
 		onDestroyEvent : function() {
 			// "nullify" all fonts
@@ -132,29 +129,19 @@ game.CustomLoadScreen = me.ScreenObject.extend({
 
 		draw : function(context) {
 
-			// measure the logo size
-			var logo1_width = this.logo1.measureText(context, "justin's").width;
-			var xpos = (context.canvas.width - logo1_width - this.logo2.measureText(context, "GAME").width) / 2;
-			var ypos = context.canvas.height / 2;
+			var logo1_width = this.logo1.measureText(context, "justin").width;
+			var xpos = (me.video.getWidth() - logo1_width - this.logo2.measureText(context, "Productions").width) / 2;
+			var ypos = me.video.getHeight() / 2;
 
 			// clear surface
 			me.video.clearSurface(context, "black");
 
-			// draw the melonJS logo
-			this.logo1.draw(context, 'justin\'s', xpos , ypos);
+			// draw the logo
+			this.logo1.draw(context, 'justin', xpos , ypos);
 			xpos += logo1_width;
-			this.logo2.draw(context, 'GAME', xpos, ypos);
+			this.logo2.draw(context, 'Productions', xpos, ypos);
 
-			ypos += this.logo1.measureText(context, "justin's").height / 2;
-
-			// display a progressive loading bar
-			var progress = Math.floor(this.loadPercent * context.canvas.width);
-
-			// draw the progress bar
-			context.strokeStyle = "silver";
-			context.strokeRect(0, ypos, context.canvas.width, 6);
-			context.fillStyle = "#89b002";
-			context.fillRect(2, ypos + 2, progress - 4, 2);
+			ypos += this.logo1.measureText(context, "game").height / 2;
 		}
 
 });
