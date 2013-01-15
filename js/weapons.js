@@ -141,8 +141,37 @@ game.Death = me.ObjectEntity.extend({
 		
 		this.pos.x = x;
 		this.pos.y = y;
+	},
+
+	update: function() {
+		var self = this;
 		
+		if(self.init) {
+			setTimeout(function() {
+				me.game.remove(self);
+			}, 500);
+			self.init = false;
+		}
 		
+		this.parent(this);
+		
+		return true;
+	}
+});
+
+game.Explode = me.ObjectEntity.extend({
+	init: function() {
+		var self = this;
+		this.player = me.game.getEntityByName("player")[0];
+		var x = this.player.pos.x;
+		var y = this.player.pos.y;
+		self.parent(x, y, {image: "explode", spritewidth: 32});
+		self.init = true;
+		self.gravity = 0;
+		self.animationspeed = 4;
+		
+		this.pos.x = x-10;
+		this.pos.y = y;
 	},
 
 	update: function() {

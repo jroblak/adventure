@@ -68,6 +68,9 @@ game.EventEntity = me.LevelEntity.extend({
 	onCollision: function(res, obj) {
 		if(obj.name === 'player') {
 			if(this.event === 'remove') {
+				var explosion = new game.Explode();
+				me.game.add(explosion, 2);
+				me.game.sort();
 				obj.equippedGear = null;
 				obj.removeCompositionItem(this.item);
 			} else if (this.event === 'theend') {

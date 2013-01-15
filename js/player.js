@@ -87,6 +87,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			}
 		}
 		
+		/*
 		if(me.input.isKeyPressed('switch')) {
 			if(!self.weapons[++self.currentWep]) {
 				self.currentWep = 0;
@@ -95,6 +96,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 				self.equipWep(self.weapons[self.currentWep]);
 			}
 		}
+		*/
 		
 		if(me.input.isKeyPressed('fly') && this.equippedGear) {
 			if(this.equippedGear.name === 'jetpack') {
