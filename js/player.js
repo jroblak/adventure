@@ -1,10 +1,10 @@
 // Items that persist through the levels. Everything gets reset on a level by level basis
 game.persistent = {
 	player: {
-		weapons: [],
-		gear: [],
+		weapons: ['whip'],
+		gear: ['jetpack'],
 		hp: 3,
-		level: 'map1',
+		level: 'map4',
 	},
 	other: {
 		deathcounter: 0
@@ -132,7 +132,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.removeHP(self.hp);
 		}
 		
-		if(this.pos.y <= 0 + me.game.viewport.pos.y || this.pos.y >= 480 + me.game.viewport.pos.y) {
+		if(this.pos.y <= -32 + me.game.viewport.pos.y || this.pos.y >= 480 + me.game.viewport.pos.y) {
 			this.removeHP(this.hp);
 		}
 		
