@@ -1,3 +1,4 @@
+// Just an object containing the attributes of available gear
 game.equipable = {
 	jetpack: {
 		name: 'jetpack',
@@ -9,7 +10,8 @@ game.equipable = {
 		offsetY: 10
 	}
 }
-	
+
+//  Generic "gear" entity -- created when a player or enemy picks up a piece of gear
 game.gear = me.AnimationSheet.extend({
 	init: function(x, y, image, sw, sh, owner, settings) {
 		// General init stuff
@@ -38,7 +40,7 @@ game.gear = me.AnimationSheet.extend({
 		var self = this;
 		self.needsUpdate = false;
 		
-		// If the player is moving, add a offset to correct for the 'shadowing'
+		// When the player changes left or right, change the offset so it stays "behind" the player
 		if (me.input.isKeyPressed('left')) {
 			self.flipX(true);
 			self.addOffset = 20;

@@ -1,20 +1,5 @@
+// Object used to store data on all available weapons in the game
 game.weapons = {
-	sword: {
-		name: 'sword',
-		image: "sword",
-		animation: [1, 2, 3, 4],
-		rate: 500,
-		damage: 1,
-		speed: null,
-		projectile: null,
-		pWidth: null,
-		pHeight: null,
-		wWidth: 12,
-		wHeight: 12,
-		offsetX: 23,
-		offsetY: 15,
-		attackRect: [27, 23, 0, 32]
-	},
 	whip: {
 		name: 'whip',
 		image: "wipwhip",
@@ -34,6 +19,8 @@ game.weapons = {
 	}
 };
 
+// A weapon entity -- used to control, animate, do dmg, etc for weapons
+// Created when a player or enemy picks up / equips a weapon
 game.weapon = me.ObjectEntity.extend({
 	init: function(x, y, image, sw, sh, owner, settings) {
 		// General init stuff
@@ -67,6 +54,7 @@ game.weapon = me.ObjectEntity.extend({
 		this.updatePosition();
 	},
 	
+	// Change the collision rect and animation when attacking so it can do damage
 	attack: function() {
 		var self = this;
 		if(self.owner.facing == 'right') {
@@ -88,6 +76,7 @@ game.weapon = me.ObjectEntity.extend({
 		
 		self.needsUpdate = self.owner.attacking;
 		
+		// Offsets so the weapon remains in the players hand
 		if (me.input.isKeyPressed('left')) {
 			self.flipX(true);
 			self.addOffset = self.weapon.addOffset;
@@ -109,7 +98,7 @@ game.weapon = me.ObjectEntity.extend({
 		
 		var res = me.game.collide(self);
 		
-		if(res) {
+		if(res && self.owner.attacking) {
 			if(res.obj.type == me.game.ENEMY_OBJECT) {
 				res.obj.removeHP(self.weapon.damage);
 			} 
@@ -124,68 +113,5 @@ game.weapon = me.ObjectEntity.extend({
 		this.parent(this);
 		
 		return this.needsUpdate;
-	}
-});
-
-game.Death = me.ObjectEntity.extend({
-	init: function() {
-		var self = this;
-		this.player = me.game.getEntityByName("player")[0];
-		var x = this.player.pos.x;
-		var y = this.player.pos.y;
-		self.parent(x, y, {image: "chargib", spritewidth: 32});
-		self.init = true;
-
-		self.gravity = 0;
-		self.animationspeed = 4;
-		
-		this.pos.x = x;
-		this.pos.y = y;
-	},
-
-	update: function() {
-		var self = this;
-		
-		if(self.init) {
-			setTimeout(function() {
-				me.game.remove(self);
-			}, 500);
-			self.init = false;
-		}
-		
-		this.parent(this);
-		
-		return true;
-	}
-});
-
-game.Explode = me.ObjectEntity.extend({
-	init: function() {
-		var self = this;
-		this.player = me.game.getEntityByName("player")[0];
-		var x = this.player.pos.x;
-		var y = this.player.pos.y;
-		self.parent(x, y, {image: "explode", spritewidth: 32});
-		self.init = true;
-		self.gravity = 0;
-		self.animationspeed = 4;
-		
-		this.pos.x = x-10;
-		this.pos.y = y;
-	},
-
-	update: function() {
-		var self = this;
-		
-		if(self.init) {
-			setTimeout(function() {
-				me.game.remove(self);
-			}, 500);
-			self.init = false;
-		}
-		
-		this.parent(this);
-		
-		return true;
 	}
 });

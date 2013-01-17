@@ -28,6 +28,7 @@ game.CoinEntity = me.CollectableEntity.extend({
 	}
 });
 
+// A special entity that allows an entity to pick up a weapon or gear
 game.PickupEntity = me.CollectableEntity.extend({
 	
 	init: function(x, y, settings) {
@@ -57,6 +58,8 @@ game.PickupEntity = me.CollectableEntity.extend({
 	}
 });
 
+// A special entity that can be used to trigger a special event
+// I use it for the credits and jetpack exploding
 game.EventEntity = me.LevelEntity.extend({
 	
 	init: function(x, y, settings) {
@@ -114,19 +117,24 @@ game.HealthObject = me.HUD_Item.extend({
 	}	
 });
 
+// Entity used to display the credits
 game.CreditsEntity = me.ObjectEntity.extend({
 	init: function(x, y) {
 		var self = this;
+		// Need to set an image even though we don't use it
+		// Set this up wrong originally and didn't feel like fixing it
+		// since it works
 		self.parent(x, y, {image: "explode", spritewidth: 1});
 
-		self.credits1 = "      The End";
-		self.credits2 = "By: Justin Oblak";
-		self.credits3 = "You died " + game.persistent.other.deathcounter + " times!";
+		self.credits1 = "         The End";
+		self.credits2 = "   By: Justin Oblak";
+		self.credits3 = "  You died " + game.persistent.other.deathcounter + " times!";
+		self.credits4 = "Refresh to play again!";
 
 		self.creditsSize = 24;
 
 		self.creditsX = this.pos.x - me.game.viewport.pos.x + 100;
-		self.creditsY = this.pos.y - me.game.viewport.pos.y + 100;
+		self.creditsY = this.pos.y - me.game.viewport.pos.y + 400;
 
 		self.credits = new me.Font('century gothic', self.creditsSize, 'black');
 
@@ -143,6 +151,72 @@ game.CreditsEntity = me.ObjectEntity.extend({
 		this.credits.draw(context, this.credits1, this.creditsX, this.creditsY);
 		this.credits.draw(context, this.credits2, this.creditsX, this.creditsY + 50);
 		this.credits.draw(context, this.credits3, this.creditsX, this.creditsY + 100);
+		this.credits.draw(context, this.credits4, this.creditsX, this.creditsY + 350);
 		this.credits.set('century gothic', this.creditsSize, 'black');
+	}
+});
+
+// An entity used to display the death animation of the player.
+game.Death = me.ObjectEntity.extend({
+	init: function() {
+		var self = this;
+		this.player = me.game.getEntityByName("player")[0];
+		var x = this.player.pos.x;
+		var y = this.player.pos.y;
+		self.parent(x, y, {image: "chargib", spritewidth: 32});
+		self.init = true;
+
+		self.gravity = 0;
+		self.animationspeed = 4;
+		
+		this.pos.x = x;
+		this.pos.y = y;
+	},
+
+	update: function() {
+		var self = this;
+		
+		if(self.init) {
+			setTimeout(function() {
+				me.game.remove(self);
+			}, 500);
+			self.init = false;
+		}
+		
+		this.parent(this);
+		
+		return true;
+	}
+});
+
+// Entity used to display the explosion animation
+game.Explode = me.ObjectEntity.extend({
+	init: function() {
+		var self = this;
+		this.player = me.game.getEntityByName("player")[0];
+		var x = this.player.pos.x;
+		var y = this.player.pos.y;
+		self.parent(x, y, {image: "explode", spritewidth: 32});
+		self.init = true;
+		self.gravity = 0;
+		self.animationspeed = 4;
+		
+		this.pos.x = x-10;
+		this.pos.y = y;
+	},
+
+	update: function() {
+		var self = this;
+		
+		if(self.init) {
+			setTimeout(function() {
+				me.game.remove(self);
+			}, 500);
+			self.init = false;
+		}
+		
+		this.parent(this);
+		
+		return true;
 	}
 });

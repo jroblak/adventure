@@ -1,3 +1,8 @@
+// Basic 'Character Entity' that extends the basic Sprite drawing engine (see sprite.js)
+// This is the basic model that both the player and all enemies are based off of
+// It includes basic functionality such as gear and weapon addition, health addition
+// and subtraction and animation checking
+
 game.CharacterEntity = game.Sprite.extend({
 	
 	init: function(x, y, settings) {

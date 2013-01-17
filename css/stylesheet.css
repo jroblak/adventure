@@ -18,3 +18,9 @@ body {
 	font-family: "Century Gothic";
 	font-size: 10px;
 }
+
+.controls {
+	font-family: "Arial";
+	color: #C0C0C0;
+	text-align: center;
+}

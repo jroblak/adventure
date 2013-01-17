@@ -1,3 +1,4 @@
+// Items that persist through the levels. Everything gets reset on a level by level basis
 game.persistent = {
 	player: {
 		weapons: [],
@@ -10,14 +11,19 @@ game.persistent = {
 	},
 };
 
+// The player entity
 game.PlayerEntity = game.CharacterEntity.extend({
 	
 	init: function(x, y, settings) {
 		var self = this; 
 		
+		// Sets the level that the player is on -- this way we can continue our
+		// progress and not restart after every death 
 		if (game.persistent.player.level != me.game.currentLevel.name) {
 			game.persistent.player.level = me.game.currentLevel.name;
 		}
+		
+		// basic settings stuff
 		settings.spritewidth = 32;
 		settings.spriteheight = 32;
 		
@@ -29,12 +35,16 @@ game.PlayerEntity = game.CharacterEntity.extend({
 		self.hurt = false;
 		self.accel.y = 1.2;
 		
+		// This is a kind of dumb hacky solution for the difficuly
+		// of level 4 -- trying to make the jetpack fall less abruptly
 		if (me.game.currentLevel.name === 'map4') {
 			me.sys.gravity = .75;
 		} else {
 			this.gravity = 1;
 		}
 
+		// functions to check the players weapons / gear and equip them if he has them
+		
 		self.weapons = game.persistent.player.weapons;
 		if(self.weapons.length > 0) {
 			self.currentWep = 0;
@@ -51,6 +61,7 @@ game.PlayerEntity = game.CharacterEntity.extend({
 			self.currentGear = null;
 		}
 		
+		// animations
 		self.addAnimation("stand", [0, 1]);
 		self.addAnimation("walk", [1, 2, 3, 4]);
 		self.addAnimation("attack", [2]);

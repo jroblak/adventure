@@ -1,3 +1,5 @@
+// Basic enemy entity - just extends the character entity and adds an 'aggro' function
+// -- basically just follow the player if it gets within a certain range.
 game.EnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad1';
@@ -12,7 +14,7 @@ game.EnemyEntity = game.CharacterEntity.extend({
 		this.walkLeft = false;
 		
 		this.startX = x;
-		this.endX = x + 200; // remove magic number later
+		this.endX = x + settings.width - settings.spritewidth;
 		
 		this.setVelocity(2, 6);
 		
@@ -20,6 +22,8 @@ game.EnemyEntity = game.CharacterEntity.extend({
 	},
 	
 	checkLOS: function() {
+		
+		// This is so we only check through the entities list one time, not every frame
 		if(this.firstCheck) {
 			this.player = me.game.getEntityByName("player")[0];
 			this.firstCheck = false;
@@ -44,7 +48,7 @@ game.EnemyEntity = game.CharacterEntity.extend({
 		return false;
 	},
 	
-	
+	// This just moves it back and forth
 	patrol: function() {
 
 		if(this.walkLeft && this.pos.x <= this.startX) {
@@ -68,6 +72,8 @@ game.EnemyEntity = game.CharacterEntity.extend({
 	}
 });
 
+
+// The same as above, except it moves vertically and has no aggro function
 game.FlyingEnemyEntity = game.CharacterEntity.extend({
 	init:function(x, y, settings) {
 		settings.image = 'bad2';
@@ -81,8 +87,7 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 		this.firstCheck = true;
 		
 		this.startY = y;
-		this.endY = y + 150; // remove magic number later
-		
+		this.endY = y + settings.height - settings.spritewidth; // spritewidth and height are the same
 		this.setVelocity(0, 3);
 		
 		this.type = me.game.ENEMY_OBJECT;
@@ -90,7 +95,7 @@ game.FlyingEnemyEntity = game.CharacterEntity.extend({
 	
 	
 	patrol: function() {
-
+	
 		if(this.pos.y <= this.startY) {
 			this.goUp = false;
 		} else if (this.pos.y >= this.endY) {
