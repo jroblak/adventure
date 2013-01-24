@@ -12,7 +12,6 @@ game.LevelChangeEntity = me.LevelEntity.extend({
 });
 
 // Coin entity -- simple gets collected and adds to the score when it does.
-// TO DO: Fix so guns don't collect/destroy them
 game.CoinEntity = me.CollectableEntity.extend({
 	
 	init: function(x, y, settings) {
