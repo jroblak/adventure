@@ -1,10 +1,10 @@
 // Items that persist through the levels. Everything gets reset on a level by level basis
 game.persistent = {
 	player: {
-		weapons: ['whip'],
-		gear: ['jetpack'],
+		weapons: [],
+		gear: [],
 		hp: 3,
-		level: 'map4',
+		level: 'map1',
 	},
 	other: {
 		deathcounter: 0
